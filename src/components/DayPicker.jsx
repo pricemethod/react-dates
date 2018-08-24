@@ -743,7 +743,6 @@ class DayPicker extends React.Component {
   adjustDayPickerHeight(newMonthHeight) {
     const monthHeight = newMonthHeight + MONTH_PADDING;
     if (monthHeight !== this.calendarMonthGridHeight) {
-      this.transitionContainer.style.height = `${monthHeight}px`;
       if (!this.calendarMonthGridHeight) {
         setTimeout(() => {
           this.setState({ hasSetHeight: true });
@@ -977,7 +976,7 @@ class DayPicker extends React.Component {
 
     const transitionContainerStyle = {
       width: '100%',
-      height,
+      height: 'auto',
     };
 
     const dayPickerStyle = {
