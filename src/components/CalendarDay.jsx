@@ -84,9 +84,7 @@ class CalendarDay extends React.Component {
   }
 
   onKeyDown(day, e) {
-    const {
-      onDayClick,
-    } = this.props;
+    const { onDayClick } = this.props;
 
     const { key } = e;
     if (key === 'Enter' || key === ' ') {
@@ -143,16 +141,29 @@ class CalendarDay extends React.Component {
           modifiers.has('selected-end') && styles.CalendarDay__selected_end,
           selected && styles.CalendarDay__selected,
           isOutsideRange && styles.CalendarDay__blocked_out_of_range,
-          daySizeStyles,
+          styles.CalendarDay__calendarDayBase,
+          {
+            width: 'calc(100% / 7)',
+          },
         )}
         role="button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
         ref={this.setButtonRef}
         aria-label={ariaLabel}
-        onMouseEnter={(e) => { this.onDayMouseEnter(day, e); }}
-        onMouseLeave={(e) => { this.onDayMouseLeave(day, e); }}
-        onMouseUp={(e) => { e.currentTarget.blur(); }}
-        onClick={(e) => { this.onDayClick(day, e); }}
-        onKeyDown={(e) => { this.onKeyDown(day, e); }}
+        onMouseEnter={(e) => {
+          this.onDayMouseEnter(day, e);
+        }}
+        onMouseLeave={(e) => {
+          this.onDayMouseLeave(day, e);
+        }}
+        onMouseUp={(e) => {
+          e.currentTarget.blur();
+        }}
+        onClick={(e) => {
+          this.onDayClick(day, e);
+        }}
+        onKeyDown={(e) => {
+          this.onKeyDown(day, e);
+        }}
         tabIndex={tabIndex}
       >
         {renderDayContents ? renderDayContents(day, modifiers) : day.format('D')}
@@ -184,7 +195,7 @@ export default withStyles(({ reactDates: { color, font } }) => ({
   CalendarDay__default: {
     border: `1px solid ${color.core.borderLight}`,
     color: color.text,
-    background: color.background,
+    background: color.core.white,
 
     ':hover': {
       background: color.core.borderLight,

@@ -2,14 +2,12 @@ import React from 'react';
 import moment from 'moment';
 import momentJalaali from 'moment-jalaali';
 import { storiesOf } from '@storybook/react';
-import {
-  VERTICAL_ORIENTATION,
-} from '../src/constants';
+import { VERTICAL_ORIENTATION } from '../src/constants';
 
 import SingleDatePickerWrapper from '../examples/SingleDatePickerWrapper';
 
 const TestInput = props => (
-  <div style={{ marginTop: 16 }} >
+  <div style={{ marginTop: 16 }}>
     <input
       {...props}
       type="text"
@@ -25,9 +23,7 @@ const TestInput = props => (
 );
 
 storiesOf('SingleDatePicker (SDP)', module)
-  .addWithInfo('default', () => (
-    <SingleDatePickerWrapper />
-  ))
+  .addWithInfo('default', () => <SingleDatePickerWrapper />)
   .addWithInfo('as part of a form', () => (
     <div>
       <SingleDatePickerWrapper />
@@ -35,7 +31,7 @@ storiesOf('SingleDatePicker (SDP)', module)
       <TestInput placeholder="Input 2" />
       <TestInput placeholder="Input 3" />
     </div>
-   ))
+  ))
   .addWithInfo('non-english locale (Chinese)', () => {
     moment.locale('zh-cn');
     return (
@@ -60,8 +56,5 @@ storiesOf('SingleDatePicker (SDP)', module)
     );
   })
   .addWithInfo('vertical with custom height', () => (
-    <SingleDatePickerWrapper
-      orientation={VERTICAL_ORIENTATION}
-      verticalHeight={568}
-    />
+    <SingleDatePickerWrapper orientation={VERTICAL_ORIENTATION} verticalHeight={568} />
   ));

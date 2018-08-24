@@ -1,5 +1,5 @@
 {
-  "name": "react-dates",
+  "name": "@lyric-travel/react-dates",
   "version": "17.2.0",
   "description": "A responsive and accessible date range picker component built with React",
   "main": "index.js",
@@ -23,8 +23,8 @@
     "pretests-karma": "npm run react",
     "tests-karma": "karma start",
     "test": "npm run build && npm run tests-only",
-    "storybook": "start-storybook -p 6006",
-    "storybook:css": "npm run build:css && start-storybook -p 6006 -c .storybook-css",
+    "storybook": "start-storybook -p 6007",
+    "storybook:css": "npm run build:css && start-storybook -p 6007 -c .storybook-css",
     "tag": "git tag v$npm_package_version",
     "gh-pages:clean": "rimraf _gh-pages",
     "gh-pages:build": "$(npm bin)/build-storybook -o _gh-pages",
@@ -110,6 +110,7 @@
     "webpack": "^2.6.1"
   },
   "dependencies": {
+    "@lyric-travel/harmony": "^3.9.15",
     "airbnb-prop-types": "^2.10.0",
     "consolidated-events": "^1.1.1 || ^2.0.0",
     "is-touch-device": "^1.0.1",

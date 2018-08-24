@@ -135,7 +135,7 @@ const defaultProps = {
 
   // i18n
   monthFormat: 'MMMM YYYY',
-  weekDayFormat: 'dd',
+  weekDayFormat: 'ddd',
   phrases: DayPickerPhrases,
   dayAriaLabelFormat: undefined,
 

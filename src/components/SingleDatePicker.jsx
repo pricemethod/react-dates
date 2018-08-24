@@ -111,7 +111,7 @@ const defaultProps = {
   // internationalization props
   displayFormat: () => moment.localeData().longDateFormat('L'),
   monthFormat: 'MMMM YYYY',
-  weekDayFormat: 'dd',
+  weekDayFormat: 'ddd',
   phrases: SingleDatePickerPhrases,
   dayAriaLabelFormat: undefined,
 };

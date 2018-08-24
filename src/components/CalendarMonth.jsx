@@ -23,11 +23,7 @@ import ModifiersShape from '../shapes/ModifiersShape';
 import ScrollableOrientationShape from '../shapes/ScrollableOrientationShape';
 import DayOfWeekShape from '../shapes/DayOfWeekShape';
 
-import {
-  HORIZONTAL_ORIENTATION,
-  VERTICAL_SCROLLABLE,
-  DAY_SIZE,
-} from '../constants';
+import { HORIZONTAL_ORIENTATION, VERTICAL_SCROLLABLE, DAY_SIZE } from '../constants';
 
 const propTypes = forbidExtraProps({
   ...withStylesPropTypes,
@@ -46,7 +42,11 @@ const propTypes = forbidExtraProps({
   renderMonthText: mutuallyExclusiveProps(PropTypes.func, 'renderMonthText', 'renderMonthElement'),
   renderCalendarDay: PropTypes.func,
   renderDayContents: PropTypes.func,
-  renderMonthElement: mutuallyExclusiveProps(PropTypes.func, 'renderMonthText', 'renderMonthElement'),
+  renderMonthElement: mutuallyExclusiveProps(
+    PropTypes.func,
+    'renderMonthText',
+    'renderMonthElement',
+  ),
   firstDayOfWeek: DayOfWeekShape,
   setMonthTitleHeight: PropTypes.func,
   verticalBorderSpacing: nonNegativeInteger,
@@ -74,7 +74,7 @@ const defaultProps = {
   onMonthSelect() {},
   onYearSelect() {},
   renderMonthText: null,
-  renderCalendarDay: props => (<CalendarDay {...props} />),
+  renderCalendarDay: props => <CalendarDay {...props} />,
   renderDayContents: null,
   renderMonthElement: null,
   firstDayOfWeek: null,
@@ -187,10 +187,7 @@ class CalendarMonth extends React.Component {
 
     return (
       <div
-        {...css(
-          styles.CalendarMonth,
-          { padding: `0 ${horizontalMonthPadding}px` },
-        )}
+        {...css(styles.CalendarMonth, { padding: `0 ${horizontalMonthPadding}px` })}
         data-visible={isVisible}
       >
         <div
@@ -203,14 +200,13 @@ class CalendarMonth extends React.Component {
           {renderMonthElement ? (
             renderMonthElement({ month, onMonthSelect, onYearSelect })
           ) : (
-            <strong>
-              {monthTitle}
-            </strong>
+            <strong>{monthTitle}</strong>
           )}
         </div>
 
         <table
           {...css(
+            { width: '100%' },
             !verticalBorderSpacing && styles.CalendarMonth_table,
             verticalBorderSpacing && styles.CalendarMonth_verticalSpacing,
             verticalBorderSpacing && { borderSpacing: `0px ${verticalBorderSpacing}px` },

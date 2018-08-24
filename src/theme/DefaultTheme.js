@@ -1,5 +1,7 @@
+import { LyricColors } from '@lyric-travel/harmony';
+
 const core = {
-  white: '#fff',
+  white: LyricColors.Primary.White,
   gray: '#484848',
   grayLight: '#82888a',
   grayLighter: '#cacccd',
@@ -11,14 +13,14 @@ const core = {
   borderLighter: '#eceeee',
   borderBright: '#f4f5f5',
 
-  primary: '#00a699',
-  primaryShade_1: '#33dacd',
-  primaryShade_2: '#66e2da',
-  primaryShade_3: '#80e8e0',
-  primaryShade_4: '#b2f1ec',
-  primary_dark: '#008489',
+  primary: LyricColors.Primary.Black,
+  primaryShade_1: LyricColors.Greyscale.Grey4,
+  primaryShade_2: LyricColors.Greyscale.Grey3,
+  primaryShade_3: LyricColors.Greyscale.Grey2,
+  primaryShade_4: LyricColors.Greyscale.Grey1,
+  primary_dark: LyricColors.Primary.Black,
 
-  secondary: '#007a87',
+  secondary: LyricColors.Primary.Black,
 
   yellow: '#ffe8bc',
   yellow_dark: '#ffce71',
@@ -54,10 +56,9 @@ export default {
 
       disabled: core.grayLightest,
 
-      background: core.white,
+      background: LyricColors.Greyscale.Grey1,
       backgroundDark: '#f2f2f2',
       backgroundFocused: core.white,
-      border: 'rgb(219, 219, 219)',
       text: core.gray,
       textDisabled: core.border,
       textFocused: '#007a87',
