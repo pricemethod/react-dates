@@ -141,6 +141,8 @@ class CalendarDay extends BaseClass {
           styles.CalendarDay__calendarDayBase,
           {
             width: 'calc(100% / 7)',
+            paddingTop: '4%',
+            paddingBottom: '4%',
           },
         )}
         role="button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
