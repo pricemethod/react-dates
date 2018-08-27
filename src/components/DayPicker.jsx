@@ -820,7 +820,7 @@ class DayPicker extends React.Component {
 
   renderWeekHeader(index) {
     const {
-      daySize, horizontalMonthPadding, orientation, weekDayFormat, styles,
+      horizontalMonthPadding, orientation, weekDayFormat, styles,
     } = this.props;
     const { calendarMonthWidth } = this.state;
     const verticalScrollable = orientation === VERTICAL_SCROLLABLE;
@@ -907,7 +907,6 @@ class DayPicker extends React.Component {
       styles,
       theme,
       phrases,
-      verticalHeight,
       dayAriaLabelFormat,
       noBorder,
       transitionDuration,
@@ -930,14 +929,6 @@ class DayPicker extends React.Component {
     }
 
     const verticalScrollable = orientation === VERTICAL_SCROLLABLE;
-    let height;
-    if (isHorizontal) {
-      height = this.calendarMonthGridHeight;
-    } else if (this.isVertical() && !verticalScrollable && !withPortal) {
-      // If the user doesn't set a desired height,
-      // we default back to this kind of made-up value that generally looks good
-      height = verticalHeight || 1.75 * calendarMonthWidth;
-    }
 
     const isCalendarMonthGridAnimating = monthTransition !== null;
 

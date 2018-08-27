@@ -18,7 +18,6 @@
     "mocha": "mocha ./test/_helpers",
     "storybook:uninstall": "npm uninstall --no-save @storybook/react && rimraf node_modules/@storybook node_modules/react-modal node_modules/react-dom-factories",
     "react": "enzyme-adapter-react-install 16",
-    "pretest": "npm run --silent lint",
     "pretests-only": "npm run react",
     "tests-only": "npm run mocha --silent test",
     "pretests-karma": "npm run react",
