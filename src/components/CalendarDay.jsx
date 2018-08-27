@@ -140,8 +140,8 @@ class CalendarDay extends BaseClass {
           styles.CalendarDay__calendarDayBase,
           {
             width: 'calc(100% / 7)',
-            paddingTop: '4%',
-            paddingBottom: '4%',
+            paddingTop: '3%',
+            paddingBottom: '3%',
           },
         )}
         role="button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
@@ -178,7 +178,7 @@ export default withStyles(({ reactDates: { color, font } }) => ({
   CalendarDay: {
     boxSizing: 'border-box',
     cursor: 'pointer',
-    fontSize: font.size,
+    fontSize: font.daySize,
     textAlign: 'center',
 
     ':active': {

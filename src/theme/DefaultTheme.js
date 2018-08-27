@@ -182,7 +182,8 @@ export default {
 
     font: {
       size: 14,
-      captionSize: 18,
+      daySize: 36,
+      captionSize: 36,
       input: {
         size: 19,
         lineHeight: '24px',
