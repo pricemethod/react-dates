@@ -18,13 +18,5 @@ describe('CalendarMonth', () => {
         expect(wrapper.prop('data-visible')).to.equal(false);
       });
     });
-
-    describe('caption', () => {
-      it('text is the correctly formatted month title', () => {
-        const MONTH = moment();
-        const captionWrapper = shallow(<CalendarMonth month={MONTH} />).dive().find('strong');
-        expect(captionWrapper.text()).to.equal(MONTH.format('MMMM YYYY'));
-      });
-    });
   });
 });
