@@ -844,11 +844,9 @@ class DayPicker extends React.Component {
     for (let i = 0; i < 7; i += 1) {
       header.push(
         <li key={i} {...css(styles.DayPicker_weekHeader_li, { width: 'calc(100% / 7)' })}>
-          <small>
-            {moment()
-              .day((i + firstDayOfWeek) % 7)
-              .format(weekDayFormat)}
-          </small>
+          {moment()
+            .day((i + firstDayOfWeek) % 7)
+            .format(weekDayFormat)}
         </li>,
       );
     }

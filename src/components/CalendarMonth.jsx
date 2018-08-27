@@ -200,7 +200,7 @@ class CalendarMonth extends React.Component {
           {renderMonthElement ? (
             renderMonthElement({ month, onMonthSelect, onYearSelect })
           ) : (
-            <strong>{monthTitle}</strong>
+            <span>{monthTitle}</span>
           )}
         </div>
 
@@ -252,8 +252,8 @@ export default withStyles(({ reactDates: { color, font, spacing } }) => ({
   },
 
   CalendarMonth_table: {
-    borderCollapse: 'collapse',
-    borderSpacing: 0,
+    borderCollapse: 'separate',
+    borderSpacing: 2,
   },
 
   CalendarMonth_verticalSpacing: {
@@ -264,6 +264,7 @@ export default withStyles(({ reactDates: { color, font, spacing } }) => ({
     color: color.text,
     fontSize: font.captionSize,
     textAlign: 'center',
+    fontWeight: 500,
     paddingTop: spacing.captionPaddingTop,
     paddingBottom: spacing.captionPaddingBottom,
     captionSide: 'initial',
