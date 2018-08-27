@@ -109,7 +109,6 @@ class CalendarDay extends BaseClass {
     if (!day) return <td />;
 
     const {
-      daySizeStyles,
       useDefaultCursor,
       selected,
       hoveredSpan,
