@@ -1,14 +1,9 @@
 {
   "root": true,
 
-  "extends": [
-    "airbnb",
-    "plugin:react-with-styles/recommended"
-  ],
+  "extends": ["plugin:react-with-styles/recommended"],
 
-  "plugins": [
-    "react-with-styles"
-  ],
+  "plugins": ["react-with-styles"],
 
   "env": {
     "browser": true,
@@ -24,10 +19,10 @@
 
     "no-restricted-imports": 0, // TODO: enable with full RTL support
 
-    "react/jsx-one-expression-per-line": 1, // TODO: enable once fixed upstream
+    "react/jsx-one-expression-per-line": 1 // TODO: enable once fixed upstream
   },
 
   "settings": {
-    "propWrapperFunctions": ["forbidExtraProps", "exact", "Object.freeze"],
+    "propWrapperFunctions": ["forbidExtraProps", "exact", "Object.freeze"]
   }
 }
