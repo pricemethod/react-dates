@@ -1,7 +1,7 @@
 {
   "root": true,
 
-  "extends": ["plugin:react-with-styles/recommended"],
+  "extends": ["airbnb", "plugin:react-with-styles/recommended"],
 
   "plugins": ["react-with-styles"],
 
