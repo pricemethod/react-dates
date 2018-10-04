@@ -1182,7 +1182,7 @@ export default withStyles(
 
     DayPicker_weekHeader_ul: {
       listStyle: 'none',
-      margin: '1px 0',
+      marginTop: 12,
       paddingLeft: 0,
       paddingRight: 0,
       fontSize: font.size,
