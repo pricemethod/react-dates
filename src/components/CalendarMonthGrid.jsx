@@ -474,7 +474,7 @@ export default withStyles(
     },
 
     CalendarMonthGrid_month__hidden: {
-      visibility: 'hidden',
+      display: 'none',
     },
   }),
 )(CalendarMonthGrid);
