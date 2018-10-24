@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
-import moment from 'moment';
+import momentPropTypes from 'react-moment-proptypes';
 
 import { DayPickerNavigationPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
@@ -19,6 +19,8 @@ const propTypes = forbidExtraProps({
   ...withStylesPropTypes,
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
+  minMonth: momentPropTypes.momentObj,
+  currentMonth: momentPropTypes.momentObj,
   orientation: ScrollableOrientationShape,
 
   onPrevMonthClick: PropTypes.func,
@@ -33,6 +35,8 @@ const propTypes = forbidExtraProps({
 const defaultProps = {
   navPrev: null,
   navNext: null,
+  minMonth: null,
+  currentMonth: null,
   orientation: HORIZONTAL_ORIENTATION,
 
   onPrevMonthClick() {},
