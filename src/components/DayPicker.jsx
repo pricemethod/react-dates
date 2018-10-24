@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import shallowCompare from 'react-addons-shallow-compare';
 import { forbidExtraProps, mutuallyExclusiveProps, nonNegativeInteger } from 'airbnb-prop-types';
 import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
+import momentPropTypes from 'react-moment-proptypes';
 
 import moment from 'moment';
 import throttle from 'lodash/throttle';
@@ -76,6 +77,7 @@ const propTypes = forbidExtraProps({
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
   noNavButtons: PropTypes.bool,
+  minMonth: momentPropTypes.momentObj,
   onPrevMonthClick: PropTypes.func,
   onNextMonthClick: PropTypes.func,
   onMonthChange: PropTypes.func,
@@ -136,6 +138,7 @@ export const defaultProps = {
   navPrev: null,
   navNext: null,
   noNavButtons: false,
+  minMonth: null,
   onPrevMonthClick() {},
   onNextMonthClick() {},
   onMonthChange() {},
@@ -787,7 +790,7 @@ class DayPicker extends React.Component {
 
   renderNavigation() {
     const {
-      navPrev, navNext, noNavButtons, orientation, phrases, isRTL,
+      navPrev, navNext, noNavButtons, orientation, phrases, isRTL, minMonth,
     } = this.props;
 
     if (noNavButtons) {
@@ -811,6 +814,8 @@ class DayPicker extends React.Component {
         onNextMonthClick={onNextMonthClick}
         navPrev={navPrev}
         navNext={navNext}
+        minMonth={minMonth}
+        currentMonth={this.state.currentMonth}
         orientation={orientation}
         phrases={phrases}
         isRTL={isRTL}

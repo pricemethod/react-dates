@@ -343,6 +343,7 @@ class DateRangePicker extends React.Component {
       renderMonthText,
       navPrev,
       navNext,
+      minMonth,
       onPrevMonthClick,
       onNextMonthClick,
       onDatesChange,
@@ -435,6 +436,7 @@ class DateRangePicker extends React.Component {
           hideKeyboardShortcutsPanel={hideKeyboardShortcutsPanel}
           navPrev={navPrev}
           navNext={navNext}
+          minMonth={minMonth}
           minimumNights={minimumNights}
           isOutsideRange={isOutsideRange}
           isDayHighlighted={isDayHighlighted}
