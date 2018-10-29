@@ -80,6 +80,7 @@ const propTypes = forbidExtraProps({
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
   noNavButtons: PropTypes.bool,
+  minMonth: momentPropTypes.momentObj,
 
   onPrevMonthClick: PropTypes.func,
   onNextMonthClick: PropTypes.func,
@@ -137,6 +138,7 @@ const defaultProps = {
   navPrev: null,
   navNext: null,
   noNavButtons: false,
+  minMonth: null,
 
   onPrevMonthClick() {},
   onNextMonthClick() {},
@@ -1081,6 +1083,7 @@ export default class DayPickerRangeController extends BaseClass {
       navPrev,
       navNext,
       noNavButtons,
+      minMonth,
       onOutsideClick,
       withPortal,
       enableOutsideDays,
@@ -1128,10 +1131,12 @@ export default class DayPickerRangeController extends BaseClass {
         hidden={!focusedInput}
         initialVisibleMonth={() => currentMonth}
         daySize={daySize}
+        minMonth={minMonth}
         onOutsideClick={onOutsideClick}
         navPrev={navPrev}
         navNext={navNext}
         noNavButtons={noNavButtons}
+        minMonth={minMonth}
         renderCalendarDay={renderCalendarDay}
         renderDayContents={renderDayContents}
         renderCalendarInfo={renderCalendarInfo}

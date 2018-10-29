@@ -341,6 +341,7 @@ class DateRangePicker extends BaseClass {
       renderMonthText,
       navPrev,
       navNext,
+      minMonth,
       onPrevMonthClick,
       onNextMonthClick,
       onDatesChange,
@@ -434,6 +435,7 @@ class DateRangePicker extends BaseClass {
           hideKeyboardShortcutsPanel={hideKeyboardShortcutsPanel}
           navPrev={navPrev}
           navNext={navNext}
+          minMonth={minMonth}
           minimumNights={minimumNights}
           isOutsideRange={isOutsideRange}
           isDayHighlighted={isDayHighlighted}
