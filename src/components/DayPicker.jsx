@@ -900,7 +900,6 @@ class DayPicker extends BaseClass {
       styles,
       theme,
       phrases,
-      verticalHeight,
       dayAriaLabelFormat,
       noBorder,
       transitionDuration,
@@ -923,14 +922,6 @@ class DayPicker extends BaseClass {
     }
 
     const verticalScrollable = orientation === VERTICAL_SCROLLABLE;
-    let height;
-    if (isHorizontal) {
-      height = this.calendarMonthGridHeight;
-    } else if (this.isVertical() && !verticalScrollable && !withPortal) {
-      // If the user doesn't set a desired height,
-      // we default back to this kind of made-up value that generally looks good
-      height = verticalHeight || 1.75 * calendarMonthWidth;
-    }
 
     const isCalendarMonthGridAnimating = monthTransition !== null;
 
