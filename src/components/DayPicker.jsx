@@ -803,7 +803,7 @@ class DayPicker extends BaseClass {
 
     return (
       <DayPickerNavigation
-        onPrevMonthClick={onPrevMonthClick}
+        onPrevMonthClick={this.onPrevMonthClick}
         onNextMonthClick={onNextMonthClick}
         navPrev={navPrev}
         navNext={navNext}
