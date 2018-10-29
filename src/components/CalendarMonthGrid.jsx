@@ -50,7 +50,11 @@ const propTypes = forbidExtraProps({
   renderCalendarDay: PropTypes.func,
   renderDayContents: PropTypes.func,
   translationValue: PropTypes.number,
-  renderMonthElement: mutuallyExclusiveProps(PropTypes.func, 'renderMonthText', 'renderMonthElement'),
+  renderMonthElement: mutuallyExclusiveProps(
+    PropTypes.func,
+    'renderMonthText',
+    'renderMonthElement',
+  ),
   daySize: nonNegativeInteger,
   focusedDate: momentPropTypes.momentObj, // indicates focusable day
   isFocused: PropTypes.bool, // indicates whether or not to move focus to focusable day
@@ -92,7 +96,7 @@ const defaultProps = {
   firstDayOfWeek: null,
   setMonthTitleHeight: null,
   isRTL: false,
-  transitionDuration: 200,
+  transitionDuration: 0,
   verticalBorderSpacing: undefined,
 
   // i18n
@@ -144,10 +148,7 @@ class CalendarMonthGrid extends BaseClass {
     const { initialMonth, numberOfMonths, orientation } = nextProps;
     const { months } = this.state;
 
-    const {
-      initialMonth: prevInitialMonth,
-      numberOfMonths: prevNumberOfMonths,
-    } = this.props;
+    const { initialMonth: prevInitialMonth, numberOfMonths: prevNumberOfMonths } = this.props;
     const hasMonthChanged = !prevInitialMonth.isSame(initialMonth, 'month');
     const hasNumberOfMonthsChanged = prevNumberOfMonths !== numberOfMonths;
     let newMonths = months;
@@ -182,11 +183,7 @@ class CalendarMonthGrid extends BaseClass {
   }
 
   componentDidUpdate() {
-    const {
-      isAnimating,
-      transitionDuration,
-      onMonthTransitionEnd,
-    } = this.props;
+    const { isAnimating, transitionDuration, onMonthTransitionEnd } = this.props;
 
     // For IE9, immediately call onMonthTransitionEnd instead of
     // waiting for the animation to complete. Similarly, if transitionDuration
@@ -272,16 +269,11 @@ class CalendarMonthGrid extends BaseClass {
     const isVerticalScrollable = orientation === VERTICAL_SCROLLABLE;
     const isHorizontal = orientation === HORIZONTAL_ORIENTATION;
 
-    const calendarMonthWidth = getCalendarMonthWidth(
-      daySize,
-      horizontalMonthPadding,
-    );
+    const calendarMonthWidth = getCalendarMonthWidth(daySize, horizontalMonthPadding);
 
-    const width = isVertical || isVerticalScrollable
-      ? calendarMonthWidth
-      : (numberOfMonths + 2) * calendarMonthWidth;
+    const width = '200%';
 
-    const transformType = (isVertical || isVerticalScrollable) ? 'translateY' : 'translateX';
+    const transformType = isVertical || isVerticalScrollable ? 'translateY' : 'translateX';
     const transformValue = `${transformType}(${translationValue}px)`;
 
     return (
@@ -292,7 +284,8 @@ class CalendarMonthGrid extends BaseClass {
           isVertical && styles.CalendarMonthGrid__vertical,
           isVerticalScrollable && styles.CalendarMonthGrid__vertical_scrollable,
           isAnimating && styles.CalendarMonthGrid__animating,
-          isAnimating && transitionDuration && {
+          isAnimating
+            && transitionDuration && {
             transition: `transform ${transitionDuration}ms ease-in-out`,
           },
           {
@@ -304,8 +297,7 @@ class CalendarMonthGrid extends BaseClass {
         onTransitionEnd={onMonthTransitionEnd}
       >
         {months.map((month, i) => {
-          const isVisible = (i >= firstVisibleMonthIndex)
-            && (i < firstVisibleMonthIndex + numberOfMonths);
+          const isVisible = i >= firstVisibleMonthIndex && i < firstVisibleMonthIndex + numberOfMonths;
           const hideForAnimation = i === 0 && !isVisible;
           const showForAnimation = i === 0 && isAnimating && isVisible;
           const monthString = toISOMonthString(month);
@@ -315,15 +307,20 @@ class CalendarMonthGrid extends BaseClass {
               {...css(
                 isHorizontal && styles.CalendarMonthGrid_month__horizontal,
                 hideForAnimation && styles.CalendarMonthGrid_month__hideForAnimation,
-                showForAnimation && !isVertical && !isRTL && {
+                showForAnimation
+                  && !isVertical
+                  && !isRTL && {
                   position: 'absolute',
                   left: -calendarMonthWidth,
                 },
-                showForAnimation && !isVertical && isRTL && {
+                showForAnimation
+                  && !isVertical
+                  && isRTL && {
                   position: 'absolute',
                   right: 0,
                 },
-                showForAnimation && isVertical && {
+                showForAnimation
+                  && isVertical && {
                   position: 'absolute',
                   top: -translationValue,
                 },
@@ -423,3 +420,63 @@ export default withStyles(({
     visibility: 'hidden',
   },
 }), { pureComponent: pureComponentAvailable })(CalendarMonthGrid);
+
+
+/*
+export default withStyles(
+  ({
+    reactDates: {
+      color, noScrollBarOnVerticalScrollable, spacing, zIndex,
+    },
+  }) => ({
+    CalendarMonthGrid: {
+      background: color.background,
+      textAlign: 'left',
+      zIndex,
+    },
+
+    CalendarMonthGrid__animating: {
+      zIndex: zIndex + 1,
+    },
+
+    CalendarMonthGrid__horizontal: {
+      position: 'absolute',
+      left: spacing.dayPickerHorizontalPadding,
+    },
+
+    CalendarMonthGrid__vertical: {
+      margin: '0 auto',
+    },
+
+    CalendarMonthGrid__vertical_scrollable: {
+      margin: '0 auto',
+      overflowY: 'scroll',
+      ...(noScrollBarOnVerticalScrollable && {
+        '-webkitOverflowScrolling': 'touch',
+        '::-webkit-scrollbar': {
+          '-webkit-appearance': 'none',
+          display: 'none',
+        },
+      }),
+    },
+
+    CalendarMonthGrid_month__horizontal: {
+      display: 'inline-block',
+      verticalAlign: 'top',
+      minHeight: '100%',
+      width: '50%',
+    },
+
+    CalendarMonthGrid_month__hideForAnimation: {
+      position: 'absolute',
+      zIndex: zIndex - 1,
+      opacity: 0,
+      pointerEvents: 'none',
+    },
+
+    CalendarMonthGrid_month__hidden: {
+      visibility: 'hidden',
+    },
+  }),
+)(CalendarMonthGrid);
+*/

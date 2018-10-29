@@ -114,7 +114,7 @@ const defaultProps = {
   // internationalization
   displayFormat: () => moment.localeData().longDateFormat('L'),
   monthFormat: 'MMMM YYYY',
-  weekDayFormat: 'dd',
+  weekDayFormat: 'ddd',
   phrases: DateRangePickerPhrases,
   dayAriaLabelFormat: undefined,
 };
@@ -146,12 +146,9 @@ class DateRangePicker extends BaseClass {
   }
 
   componentDidMount() {
-    this.removeEventListener = addEventListener(
-      window,
-      'resize',
-      this.responsivizePickerPosition,
-      { passive: true },
-    );
+    this.removeEventListener = addEventListener(window, 'resize', this.responsivizePickerPosition, {
+      passive: true,
+    });
     this.responsivizePickerPosition();
     this.disableScroll();
 
@@ -184,11 +181,7 @@ class DateRangePicker extends BaseClass {
 
   onOutsideClick(event) {
     const {
-      onFocusChange,
-      onClose,
-      startDate,
-      endDate,
-      appendToBody,
+      onFocusChange, onClose, startDate, endDate, appendToBody,
     } = this.props;
     if (!this.isOpened()) return;
     if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
@@ -306,11 +299,8 @@ class DateRangePicker extends BaseClass {
             containerEdge,
             horizontalMargin,
           ),
-          ...(appendToBody && getDetachedContainerStyles(
-            openDirection,
-            anchorDirection,
-            this.container,
-          )),
+          ...(appendToBody
+            && getDetachedContainerStyles(openDirection, anchorDirection, this.container)),
         },
       });
     }
@@ -332,11 +322,7 @@ class DateRangePicker extends BaseClass {
     }
 
     if (withPortal || withFullScreenPortal || appendToBody) {
-      return (
-        <Portal>
-          {this.renderDayPicker()}
-        </Portal>
-      );
+      return <Portal>{this.renderDayPicker()}</Portal>;
     }
 
     return this.renderDayPicker();
@@ -393,12 +379,8 @@ class DateRangePicker extends BaseClass {
     } = this.props;
     const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
 
-    const onOutsideClick = (!withFullScreenPortal && withPortal)
-      ? this.onOutsideClick
-      : undefined;
-    const initialVisibleMonthThunk = initialVisibleMonth || (
-      () => (startDate || endDate || moment())
-    );
+    const onOutsideClick = !withFullScreenPortal && withPortal ? this.onOutsideClick : undefined;
+    const initialVisibleMonthThunk = initialVisibleMonth || (() => startDate || endDate || moment());
 
     const closeIcon = customCloseIcon || (
       <CloseButton {...css(styles.DateRangePicker_closeButton_svg)} />
@@ -417,10 +399,12 @@ class DateRangePicker extends BaseClass {
           anchorDirection === ANCHOR_RIGHT && styles.DateRangePicker_picker__directionRight,
           orientation === HORIZONTAL_ORIENTATION && styles.DateRangePicker_picker__horizontal,
           orientation === VERTICAL_ORIENTATION && styles.DateRangePicker_picker__vertical,
-          !withAnyPortal && openDirection === OPEN_DOWN && {
+          !withAnyPortal
+            && openDirection === OPEN_DOWN && {
             top: inputHeight + verticalSpacing,
           },
-          !withAnyPortal && openDirection === OPEN_UP && {
+          !withAnyPortal
+            && openDirection === OPEN_UP && {
             bottom: inputHeight + verticalSpacing,
           },
           withAnyPortal && styles.DateRangePicker_picker__portal,
@@ -529,7 +513,7 @@ class DateRangePicker extends BaseClass {
 
     const { isDateRangePickerInputFocused } = this.state;
 
-    const enableOutsideClick = (!withPortal && !withFullScreenPortal);
+    const enableOutsideClick = !withPortal && !withFullScreenPortal;
 
     const hideFang = verticalSpacing < FANG_HEIGHT_PX;
 
@@ -580,10 +564,7 @@ class DateRangePicker extends BaseClass {
     return (
       <div
         ref={this.setContainerRef}
-        {...css(
-          styles.DateRangePicker,
-          block && styles.DateRangePicker__block,
-        )}
+        {...css(styles.DateRangePicker, block && styles.DateRangePicker__block)}
       >
         {enableOutsideClick && (
           <OutsideClickHandler onOutsideClick={this.onOutsideClick}>
