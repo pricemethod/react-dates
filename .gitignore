@@ -48,3 +48,5 @@ package-lock.json
 
 css/styles.css
 
+# VS Code plugin that saves versions pre-commit & push
+.history/

@@ -77,7 +77,7 @@ const defaultProps = {
   verticalHeight: undefined,
   withPortal: false,
   initialVisibleMonth: null,
-  numberOfMonths: 2,
+  numberOfMonths: 1,
   onOutsideClick() {},
   keepOpenOnDateSelect: false,
   renderCalendarInfo: null,

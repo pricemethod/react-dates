@@ -119,9 +119,9 @@ class CalendarMonth extends BaseClass {
       firstDayOfWeek: prevFirstDayOfWeek,
     } = this.props;
     if (
-      !month.isSame(prevMonth)
-      || enableOutsideDays !== prevEnableOutsideDays
-      || firstDayOfWeek !== prevFirstDayOfWeek
+      !month.isSame(prevMonth) ||
+      enableOutsideDays !== prevEnableOutsideDays ||
+      firstDayOfWeek !== prevFirstDayOfWeek
     ) {
       this.setState({
         weeks: getCalendarMonthWeeks(
@@ -197,13 +197,12 @@ class CalendarMonth extends BaseClass {
           {renderMonthElement ? (
             renderMonthElement({ month, onMonthSelect, onYearSelect })
           ) : (
-            <span>{monthTitle}</span>
+            <strong>{monthTitle}</strong>
           )}
         </div>
 
         <table
           {...css(
-            { width: '100%' },
             !verticalBorderSpacing && styles.CalendarMonth_table,
             verticalBorderSpacing && styles.CalendarMonth_verticalSpacing,
             verticalBorderSpacing && { borderSpacing: `0px ${verticalBorderSpacing}px` },
@@ -213,21 +212,23 @@ class CalendarMonth extends BaseClass {
           <tbody>
             {weeks.map((week, i) => (
               <CalendarWeek key={i}>
-                {week.map((day, dayOfWeek) => renderCalendarDay({
-                  key: dayOfWeek,
-                  day,
-                  daySize,
-                  isOutsideDay: !day || day.month() !== month.month(),
-                  tabIndex: isVisible && isSameDay(day, focusedDate) ? 0 : -1,
-                  isFocused,
-                  onDayMouseEnter,
-                  onDayMouseLeave,
-                  onDayClick,
-                  renderDayContents,
-                  phrases,
-                  modifiers: modifiers[toISODateString(day)],
-                  ariaLabelFormat: dayAriaLabelFormat,
-                }))}
+                {week.map((day, dayOfWeek) =>
+                  renderCalendarDay({
+                    key: dayOfWeek,
+                    day,
+                    daySize,
+                    isOutsideDay: !day || day.month() !== month.month(),
+                    tabIndex: isVisible && isSameDay(day, focusedDate) ? 0 : -1,
+                    isFocused,
+                    onDayMouseEnter,
+                    onDayMouseLeave,
+                    onDayClick,
+                    renderDayContents,
+                    phrases,
+                    modifiers: modifiers[toISODateString(day)],
+                    ariaLabelFormat: dayAriaLabelFormat,
+                  }),
+                )}
               </CalendarWeek>
             ))}
           </tbody>
@@ -240,35 +241,37 @@ class CalendarMonth extends BaseClass {
 CalendarMonth.propTypes = propTypes;
 CalendarMonth.defaultProps = defaultProps;
 
-export default withStyles(({ reactDates: { color, font, spacing } }) => ({
-  CalendarMonth: {
-    background: color.background,
-    textAlign: 'center',
-    verticalAlign: 'top',
-    userSelect: 'none',
-  },
+export default withStyles(
+  ({ reactDates: { color, font, spacing } }) => ({
+    CalendarMonth: {
+      background: color.background,
+      textAlign: 'center',
+      verticalAlign: 'top',
+      userSelect: 'none',
+    },
 
-  CalendarMonth_table: {
-    borderCollapse: 'separate',
-    borderSpacing: 2,
-  },
+    CalendarMonth_table: {
+      borderCollapse: 'collapse',
+      borderSpacing: 0,
+    },
 
-  CalendarMonth_verticalSpacing: {
-    borderCollapse: 'separate',
-  },
+    CalendarMonth_verticalSpacing: {
+      borderCollapse: 'separate',
+    },
 
-  CalendarMonth_caption: {
-    color: color.text,
-    fontSize: font.captionSize,
-    textAlign: 'center',
-    fontWeight: 500,
-    paddingTop: spacing.captionPaddingTop,
-    paddingBottom: spacing.captionPaddingBottom,
-    captionSide: 'initial',
-  },
+    CalendarMonth_caption: {
+      color: color.text,
+      fontSize: font.captionSize,
+      textAlign: 'center',
+      paddingTop: spacing.captionPaddingTop,
+      paddingBottom: spacing.captionPaddingBottom,
+      captionSide: 'initial',
+    },
 
-  CalendarMonth_caption__verticalScrollable: {
-    paddingTop: 12,
-    paddingBottom: 7,
-  },
-}), { pureComponent: pureComponentAvailable })(CalendarMonth);
+    CalendarMonth_caption__verticalScrollable: {
+      paddingTop: 12,
+      paddingBottom: 7,
+    },
+  }),
+  { pureComponent: pureComponentAvailable },
+)(CalendarMonth);

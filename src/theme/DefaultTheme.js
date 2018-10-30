@@ -56,7 +56,7 @@ export default {
 
       disabled: core.grayLightest,
 
-      background: LyricColors.Greyscale.Grey1,
+      background: core.white,
       backgroundDark: '#f2f2f2',
       backgroundFocused: core.white,
       text: core.gray,
@@ -182,7 +182,8 @@ export default {
 
     font: {
       size: 14,
-      daySize: 36,
+      daySizeSmall: 16,
+      daySizeLarge: 42,
       captionSize: 36,
       input: {
         size: 19,

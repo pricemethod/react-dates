@@ -4,6 +4,7 @@ import { forbidExtraProps } from 'airbnb-prop-types';
 import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
 import momentPropTypes from 'react-moment-proptypes';
 
+import moment from 'moment';
 import { DayPickerNavigationPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
 import { pureComponentAvailable } from '../utils/baseClass';
@@ -13,13 +14,14 @@ import RightArrow from './RightArrow';
 import ChevronUp from './ChevronUp';
 import ChevronDown from './ChevronDown';
 import ScrollableOrientationShape from '../shapes/ScrollableOrientationShape';
+
 import { HORIZONTAL_ORIENTATION, VERTICAL_SCROLLABLE } from '../constants';
 
 const propTypes = forbidExtraProps({
   ...withStylesPropTypes,
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
-  minMonth: momentPropTypes.momentObj,
+  minMonth: momentPropTypes.momentDurationObjObj,
   currentMonth: momentPropTypes.momentObj,
   orientation: ScrollableOrientationShape,
 
@@ -56,8 +58,8 @@ function DayPickerNavigation({
   phrases,
   isRTL,
   styles,
-  minMonth,
   currentMonth,
+  minMonth,
 }) {
   const disabledPrev = minMonth ? currentMonth.isSameOrBefore(minMonth, 'month') : false;
 
@@ -127,45 +129,45 @@ function DayPickerNavigation({
       {!isVerticalScrollable && (
         <div
           role="button"
-          tabIndex="0"
+          tabIndex={!disabledPrev ? '0' : null}
           {...css(
             styles.DayPickerNavigation_button,
             isDefaultNavPrev && styles.DayPickerNavigation_button__default,
-            ...(isHorizontal
-              ? [
-                  styles.DayPickerNavigation_button__horizontal,
-                  ...(isDefaultNavPrev
-                    ? [
-                        styles.DayPickerNavigation_button__horizontalDefault,
-                        !isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault,
-                        isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault,
-                      ]
-                    : []),
-                ]
-              : []),
-            ...(isVertical
-              ? [
-                  styles.DayPickerNavigation_button__vertical,
-                  ...(isDefaultNavPrev
-                    ? [
-                        styles.DayPickerNavigation_button__verticalDefault,
-                        styles.DayPickerNavigation_prevButton__verticalDefault,
-                      ]
-                    : []),
-                ]
-              : []),
+            ...(isHorizontal && [
+              styles.DayPickerNavigation_button__horizontal,
+              ...(isDefaultNavPrev && [
+                styles.DayPickerNavigation_button__horizontalDefault,
+                !isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault,
+                isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault,
+              ]),
+            ]),
+            ...(isVertical && [
+              styles.DayPickerNavigation_button__vertical,
+              ...(isDefaultNavPrev && [
+                styles.DayPickerNavigation_button__verticalDefault,
+                styles.DayPickerNavigation_prevButton__verticalDefault,
+              ]),
+            ]),
           )}
           aria-label={phrases.jumpToPrevMonth}
-          onClick={onPrevMonthClick}
-          onKeyUp={e => {
-            const { key } = e;
-            if (key === 'Enter' || key === ' ') onPrevMonthClick(e);
-          }}
-          onMouseUp={e => {
-            e.currentTarget.blur();
-          }}
+          onClick={!disabledPrev ? onPrevMonthClick : null}
+          onKeyUp={
+            !disabledPrev
+              ? e => {
+                  const { key } = e;
+                  if (key === 'Enter' || key === ' ') onPrevMonthClick(e);
+                }
+              : null
+          }
+          onMouseUp={
+            !disabledPrev
+              ? e => {
+                  e.currentTarget.blur();
+                }
+              : null
+          }
         >
-          {navPrevIcon}
+          {React.cloneElement(navPrevIcon, { disabled: disabledPrev })}
         </div>
       )}
 
