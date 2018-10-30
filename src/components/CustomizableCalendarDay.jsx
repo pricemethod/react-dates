@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import shallowCompare from 'react-addons-shallow-compare';
 import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps, nonNegativeInteger, or } from 'airbnb-prop-types';
 import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
@@ -9,11 +8,14 @@ import moment from 'moment';
 import { CalendarDayPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
 import getCalendarDaySettings from '../utils/getCalendarDaySettings';
+import BaseClass, { pureComponentAvailable } from '../utils/baseClass';
 
 import { DAY_SIZE } from '../constants';
 import DefaultTheme from '../theme/DefaultTheme';
 
-const { reactDates: { color } } = DefaultTheme;
+const {
+  reactDates: { color },
+} = DefaultTheme;
 
 function getStyles(stylesObj, isHovered) {
   if (!stylesObj) return null;
@@ -81,7 +83,7 @@ export const defaultStyles = {
 
   hover: {
     background: color.core.borderLight,
-    border: `1px double ${color.core.borderLight}`,
+    border: `1px solid ${color.core.borderLight}`,
     color: 'inherit',
   },
 };
@@ -139,40 +141,44 @@ export const blockedOutOfRangeStyles = {
 
 export const hoveredSpanStyles = {
   background: color.hoveredSpan.backgroundColor,
-  border: `1px solid ${color.hoveredSpan.borderColor}`,
+  border: `1px double ${color.hoveredSpan.borderColor}`,
   color: color.hoveredSpan.color,
 
   hover: {
     background: color.hoveredSpan.backgroundColor_hover,
-    border: `1px solid ${color.hoveredSpan.borderColor}`,
+    border: `1px double ${color.hoveredSpan.borderColor}`,
     color: color.hoveredSpan.color_active,
   },
 };
 
 export const selectedSpanStyles = {
   background: color.selectedSpan.backgroundColor,
-  border: `1px solid ${color.selectedSpan.borderColor}`,
+  border: `1px double ${color.selectedSpan.borderColor}`,
   color: color.selectedSpan.color,
 
   hover: {
     background: color.selectedSpan.backgroundColor_hover,
-    border: `1px solid ${color.selectedSpan.borderColor}`,
+    border: `1px double ${color.selectedSpan.borderColor}`,
     color: color.selectedSpan.color_active,
   },
 };
 
 export const lastInRangeStyles = {
-  borderRight: color.core.primary,
+  borderStyle: 'solid',
+
+  hover: {
+    borderStyle: 'solid',
+  },
 };
 
 export const selectedStyles = {
   background: color.selected.backgroundColor,
-  border: `1px solid ${color.selected.borderColor}`,
+  border: `1px double ${color.selected.borderColor}`,
   color: color.selected.color,
 
   hover: {
     background: color.selected.backgroundColor_hover,
-    border: `1px solid ${color.selected.borderColor}`,
+    border: `1px double ${color.selected.borderColor}`,
     color: color.selected.color_active,
   },
 };
@@ -212,7 +218,8 @@ const defaultProps = {
   phrases: CalendarDayPhrases,
 };
 
-class CustomizableCalendarDay extends React.Component {
+/** @extends React.Component */
+class CustomizableCalendarDay extends BaseClass {
   constructor(...args) {
     super(...args);
 
@@ -221,10 +228,6 @@ class CustomizableCalendarDay extends React.Component {
     };
 
     this.setButtonRef = this.setButtonRef.bind(this);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
   }
 
   componentDidUpdate(prevProps) {
@@ -254,9 +257,7 @@ class CustomizableCalendarDay extends React.Component {
   }
 
   onKeyDown(day, e) {
-    const {
-      onDayClick,
-    } = this.props;
+    const { onDayClick } = this.props;
 
     const { key } = e;
     if (key === 'Enter' || key === ' ') {
@@ -322,11 +323,14 @@ class CustomizableCalendarDay extends React.Component {
           modifiers.has('today') && getStyles(todayStylesWithHover, isHovered),
           modifiers.has('first-day-of-week') && getStyles(firstDayOfWeekStylesWithHover, isHovered),
           modifiers.has('last-day-of-week') && getStyles(lastDayOfWeekStylesWithHover, isHovered),
-          modifiers.has('highlighted-calendar') && getStyles(highlightedCalendarStylesWithHover, isHovered),
-          modifiers.has('blocked-minimum-nights') && getStyles(blockedMinNightsStylesWithHover, isHovered),
+          modifiers.has('highlighted-calendar') &&
+            getStyles(highlightedCalendarStylesWithHover, isHovered),
+          modifiers.has('blocked-minimum-nights') &&
+            getStyles(blockedMinNightsStylesWithHover, isHovered),
           modifiers.has('blocked-calendar') && getStyles(blockedCalendarStylesWithHover, isHovered),
           hoveredSpan && getStyles(hoveredSpanStylesWithHover, isHovered),
-          modifiers.has('after-hovered-start') && getStyles(afterHoveredStartStylesWithHover, isHovered),
+          modifiers.has('after-hovered-start') &&
+            getStyles(afterHoveredStartStylesWithHover, isHovered),
           modifiers.has('selected-span') && getStyles(selectedSpanStylesWithHover, isHovered),
           modifiers.has('last-in-range') && getStyles(lastInRangeStylesWithHover, isHovered),
           selected && getStyles(selectedStylesWithHover, isHovered),
@@ -337,11 +341,21 @@ class CustomizableCalendarDay extends React.Component {
         role="button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
         ref={this.setButtonRef}
         aria-label={ariaLabel}
-        onMouseEnter={(e) => { this.onDayMouseEnter(day, e); }}
-        onMouseLeave={(e) => { this.onDayMouseLeave(day, e); }}
-        onMouseUp={(e) => { e.currentTarget.blur(); }}
-        onClick={(e) => { this.onDayClick(day, e); }}
-        onKeyDown={(e) => { this.onKeyDown(day, e); }}
+        onMouseEnter={e => {
+          this.onDayMouseEnter(day, e);
+        }}
+        onMouseLeave={e => {
+          this.onDayMouseLeave(day, e);
+        }}
+        onMouseUp={e => {
+          e.currentTarget.blur();
+        }}
+        onClick={e => {
+          this.onDayClick(day, e);
+        }}
+        onKeyDown={e => {
+          this.onKeyDown(day, e);
+        }}
         tabIndex={tabIndex}
       >
         {renderDayContents ? renderDayContents(day, modifiers) : day.format('D')}
@@ -354,19 +368,22 @@ CustomizableCalendarDay.propTypes = propTypes;
 CustomizableCalendarDay.defaultProps = defaultProps;
 
 export { CustomizableCalendarDay as PureCustomizableCalendarDay };
-export default withStyles(({ reactDates: { font } }) => ({
-  CalendarDay: {
-    boxSizing: 'border-box',
-    cursor: 'pointer',
-    fontSize: font.size,
-    textAlign: 'center',
+export default withStyles(
+  ({ reactDates: { font } }) => ({
+    CalendarDay: {
+      boxSizing: 'border-box',
+      cursor: 'pointer',
+      fontSize: font.size,
+      textAlign: 'center',
 
-    ':active': {
-      outline: 0,
+      ':active': {
+        outline: 0,
+      },
     },
-  },
 
-  CalendarDay__defaultCursor: {
-    cursor: 'default',
-  },
-}))(CustomizableCalendarDay);
+    CalendarDay__defaultCursor: {
+      cursor: 'default',
+    },
+  }),
+  { pureComponent: pureComponentAvailable },
+)(CustomizableCalendarDay);

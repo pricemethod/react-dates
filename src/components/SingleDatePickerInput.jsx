@@ -14,6 +14,7 @@ import CalendarIcon from './CalendarIcon';
 
 import openDirectionShape from '../shapes/OpenDirectionShape';
 import { ICON_BEFORE_POSITION, ICON_AFTER_POSITION, OPEN_DOWN } from '../constants';
+import { pureComponentAvailable } from '../utils/baseClass';
 
 const propTypes = forbidExtraProps({
   ...withStylesPropTypes,
@@ -86,8 +87,6 @@ const defaultProps = {
   // i18n
   phrases: SingleDatePickerInputPhrases,
 };
-
-/* eslint react/no-this-in-sfc: 1 */
 
 function SingleDatePickerInput({
   id,
@@ -195,8 +194,6 @@ function SingleDatePickerInput({
           type="button"
           aria-label={phrases.clearDate}
           disabled={disabled}
-          onMouseEnter={this && this.onClearDateMouseEnter}
-          onMouseLeave={this && this.onClearDateMouseLeave}
           onClick={onClearDate}
         >
           {closeIcon}
@@ -310,4 +307,4 @@ export default withStyles(({ reactDates: { border, color } }) => ({
     width: 14,
     verticalAlign: 'middle',
   },
-}))(SingleDatePickerInput);
+}), { pureComponent: pureComponentAvailable })(SingleDatePickerInput);

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import shallowCompare from 'react-addons-shallow-compare';
 import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps, mutuallyExclusiveProps, nonNegativeInteger } from 'airbnb-prop-types';
 import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
@@ -22,6 +21,7 @@ import isNextMonth from '../utils/isNextMonth';
 import ModifiersShape from '../shapes/ModifiersShape';
 import ScrollableOrientationShape from '../shapes/ScrollableOrientationShape';
 import DayOfWeekShape from '../shapes/DayOfWeekShape';
+import BaseClass, { pureComponentAvailable } from '../utils/baseClass';
 
 import {
   HORIZONTAL_ORIENTATION,
@@ -118,7 +118,8 @@ function getMonths(initialMonth, numberOfMonths, withoutTransitionMonths) {
   return months;
 }
 
-class CalendarMonthGrid extends React.Component {
+/** @extends React.Component */
+class CalendarMonthGrid extends BaseClass {
   constructor(props) {
     super(props);
     const withoutTransitionMonths = props.orientation === VERTICAL_SCROLLABLE;
@@ -179,10 +180,6 @@ class CalendarMonthGrid extends React.Component {
     this.setState({
       months: newMonths,
     });
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
   }
 
   componentDidUpdate() {
@@ -367,58 +364,59 @@ class CalendarMonthGrid extends React.Component {
 CalendarMonthGrid.propTypes = propTypes;
 CalendarMonthGrid.defaultProps = defaultProps;
 
-export default withStyles(
-  ({
-    reactDates: {
-      color, noScrollBarOnVerticalScrollable, spacing, zIndex,
-    },
-  }) => ({
-    CalendarMonthGrid: {
-      background: color.background,
-      textAlign: 'left',
-      zIndex,
-    },
+export default withStyles(({
+  reactDates: {
+    color,
+    noScrollBarOnVerticalScrollable,
+    spacing,
+    zIndex,
+  },
+}) => ({
+  CalendarMonthGrid: {
+    background: color.background,
+    textAlign: 'left',
+    zIndex,
+  },
 
-    CalendarMonthGrid__animating: {
-      zIndex: zIndex + 1,
-    },
+  CalendarMonthGrid__animating: {
+    zIndex: zIndex + 1,
+  },
 
-    CalendarMonthGrid__horizontal: {
-      left: spacing.dayPickerHorizontalPadding,
-    },
+  CalendarMonthGrid__horizontal: {
+    position: 'absolute',
+    left: spacing.dayPickerHorizontalPadding,
+  },
 
-    CalendarMonthGrid__vertical: {
-      margin: '0 auto',
-    },
+  CalendarMonthGrid__vertical: {
+    margin: '0 auto',
+  },
 
-    CalendarMonthGrid__vertical_scrollable: {
-      margin: '0 auto',
-      overflowY: 'scroll',
-      ...(noScrollBarOnVerticalScrollable && {
-        '-webkitOverflowScrolling': 'touch',
-        '::-webkit-scrollbar': {
-          '-webkit-appearance': 'none',
-          display: 'none',
-        },
-      }),
-    },
+  CalendarMonthGrid__vertical_scrollable: {
+    margin: '0 auto',
+    overflowY: 'scroll',
+    ...(noScrollBarOnVerticalScrollable && {
+      '-webkitOverflowScrolling': 'touch',
+      '::-webkit-scrollbar': {
+        '-webkit-appearance': 'none',
+        display: 'none',
+      },
+    }),
+  },
 
-    CalendarMonthGrid_month__horizontal: {
-      display: 'inline-block',
-      verticalAlign: 'top',
-      minHeight: '100%',
-      width: '50%',
-    },
+  CalendarMonthGrid_month__horizontal: {
+    display: 'inline-block',
+    verticalAlign: 'top',
+    minHeight: '100%',
+  },
 
-    CalendarMonthGrid_month__hideForAnimation: {
-      position: 'absolute',
-      zIndex: zIndex - 1,
-      opacity: 0,
-      pointerEvents: 'none',
-    },
+  CalendarMonthGrid_month__hideForAnimation: {
+    position: 'absolute',
+    zIndex: zIndex - 1,
+    opacity: 0,
+    pointerEvents: 'none',
+  },
 
-    CalendarMonthGrid_month__hidden: {
-      display: 'none',
-    },
-  }),
-)(CalendarMonthGrid);
+  CalendarMonthGrid_month__hidden: {
+    visibility: 'hidden',
+  },
+}), { pureComponent: pureComponentAvailable })(CalendarMonthGrid);

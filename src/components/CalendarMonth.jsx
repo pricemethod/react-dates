@@ -2,7 +2,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import shallowCompare from 'react-addons-shallow-compare';
 import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps, mutuallyExclusiveProps, nonNegativeInteger } from 'airbnb-prop-types';
 import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
@@ -22,6 +21,7 @@ import toISODateString from '../utils/toISODateString';
 import ModifiersShape from '../shapes/ModifiersShape';
 import ScrollableOrientationShape from '../shapes/ScrollableOrientationShape';
 import DayOfWeekShape from '../shapes/DayOfWeekShape';
+import BaseClass, { pureComponentAvailable } from '../utils/baseClass';
 
 import { HORIZONTAL_ORIENTATION, VERTICAL_SCROLLABLE, DAY_SIZE } from '../constants';
 
@@ -90,7 +90,8 @@ const defaultProps = {
   verticalBorderSpacing: undefined,
 };
 
-class CalendarMonth extends React.Component {
+/** @extends React.Component */
+class CalendarMonth extends BaseClass {
   constructor(props) {
     super(props);
 
@@ -118,9 +119,9 @@ class CalendarMonth extends React.Component {
       firstDayOfWeek: prevFirstDayOfWeek,
     } = this.props;
     if (
-      !month.isSame(prevMonth)
-      || enableOutsideDays !== prevEnableOutsideDays
-      || firstDayOfWeek !== prevFirstDayOfWeek
+      !month.isSame(prevMonth) ||
+      enableOutsideDays !== prevEnableOutsideDays ||
+      firstDayOfWeek !== prevFirstDayOfWeek
     ) {
       this.setState({
         weeks: getCalendarMonthWeeks(
@@ -130,10 +131,6 @@ class CalendarMonth extends React.Component {
         ),
       });
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
   }
 
   componentWillUnmount() {
@@ -216,21 +213,23 @@ class CalendarMonth extends React.Component {
           <tbody>
             {weeks.map((week, i) => (
               <CalendarWeek key={i}>
-                {week.map((day, dayOfWeek) => renderCalendarDay({
-                  key: dayOfWeek,
-                  day,
-                  daySize,
-                  isOutsideDay: !day || day.month() !== month.month(),
-                  tabIndex: isVisible && isSameDay(day, focusedDate) ? 0 : -1,
-                  isFocused,
-                  onDayMouseEnter,
-                  onDayMouseLeave,
-                  onDayClick,
-                  renderDayContents,
-                  phrases,
-                  modifiers: modifiers[toISODateString(day)],
-                  ariaLabelFormat: dayAriaLabelFormat,
-                }))}
+                {week.map((day, dayOfWeek) =>
+                  renderCalendarDay({
+                    key: dayOfWeek,
+                    day,
+                    daySize,
+                    isOutsideDay: !day || day.month() !== month.month(),
+                    tabIndex: isVisible && isSameDay(day, focusedDate) ? 0 : -1,
+                    isFocused,
+                    onDayMouseEnter,
+                    onDayMouseLeave,
+                    onDayClick,
+                    renderDayContents,
+                    phrases,
+                    modifiers: modifiers[toISODateString(day)],
+                    ariaLabelFormat: dayAriaLabelFormat,
+                  }),
+                )}
               </CalendarWeek>
             ))}
           </tbody>
@@ -243,35 +242,37 @@ class CalendarMonth extends React.Component {
 CalendarMonth.propTypes = propTypes;
 CalendarMonth.defaultProps = defaultProps;
 
-export default withStyles(({ reactDates: { color, font, spacing } }) => ({
-  CalendarMonth: {
-    background: color.background,
-    textAlign: 'center',
-    verticalAlign: 'top',
-    userSelect: 'none',
-  },
+export default withStyles(
+  ({ reactDates: { color, font, spacing } }) => ({
+    CalendarMonth: {
+      background: color.background,
+      textAlign: 'center',
+      verticalAlign: 'top',
+      userSelect: 'none',
+    },
 
-  CalendarMonth_table: {
-    borderCollapse: 'separate',
-    borderSpacing: 2,
-  },
+    CalendarMonth_table: {
+      borderCollapse: 'collapse',
+      borderSpacing: 0,
+    },
 
-  CalendarMonth_verticalSpacing: {
-    borderCollapse: 'separate',
-  },
+    CalendarMonth_verticalSpacing: {
+      borderCollapse: 'separate',
+    },
 
-  CalendarMonth_caption: {
-    color: color.text,
-    fontSize: font.captionSize,
-    textAlign: 'center',
-    fontWeight: 500,
-    paddingTop: spacing.captionPaddingTop,
-    paddingBottom: spacing.captionPaddingBottom,
-    captionSide: 'initial',
-  },
+    CalendarMonth_caption: {
+      color: color.text,
+      fontSize: font.captionSize,
+      textAlign: 'center',
+      paddingTop: spacing.captionPaddingTop,
+      paddingBottom: spacing.captionPaddingBottom,
+      captionSide: 'initial',
+    },
 
-  CalendarMonth_caption__verticalScrollable: {
-    paddingTop: 12,
-    paddingBottom: 7,
-  },
-}))(CalendarMonth);
+    CalendarMonth_caption__verticalScrollable: {
+      paddingTop: 12,
+      paddingBottom: 7,
+    },
+  }),
+  { pureComponent: pureComponentAvailable },
+)(CalendarMonth);
