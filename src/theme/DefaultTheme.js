@@ -56,7 +56,7 @@ export default {
 
       disabled: core.grayLightest,
 
-      background: core.white,
+      background: LyricColors.Greyscale.Grey1,
       backgroundDark: '#f2f2f2',
       backgroundFocused: core.white,
       text: core.gray,

@@ -109,7 +109,6 @@ class CalendarDay extends BaseClass {
     if (!day) return <td />;
 
     const {
-      daySizeStyles,
       useDefaultCursor,
       selected,
       hoveredSpan,
@@ -138,7 +137,12 @@ class CalendarDay extends BaseClass {
           modifiers.has('selected-end') && styles.CalendarDay__selected_end,
           selected && styles.CalendarDay__selected,
           isOutsideRange && styles.CalendarDay__blocked_out_of_range,
-          daySizeStyles,
+          styles.CalendarDay__calendarDayBase,
+          {
+            width: 'calc(100% / 7)',
+            paddingTop: '3%',
+            paddingBottom: '3%',
+          },
         )}
         role="button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
         ref={this.setButtonRef}

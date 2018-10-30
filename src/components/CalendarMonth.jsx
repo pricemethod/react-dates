@@ -197,12 +197,13 @@ class CalendarMonth extends BaseClass {
           {renderMonthElement ? (
             renderMonthElement({ month, onMonthSelect, onYearSelect })
           ) : (
-            <strong>{monthTitle}</strong>
+            <span>{monthTitle}</span>
           )}
         </div>
 
         <table
           {...css(
+            { width: '100%' },
             !verticalBorderSpacing && styles.CalendarMonth_table,
             verticalBorderSpacing && styles.CalendarMonth_verticalSpacing,
             verticalBorderSpacing && { borderSpacing: `0px ${verticalBorderSpacing}px` },

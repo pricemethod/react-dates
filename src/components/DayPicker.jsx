@@ -165,7 +165,7 @@ export const defaultProps = {
 
   // internationalization
   monthFormat: 'MMMM YYYY',
-  weekDayFormat: 'dd',
+  weekDayFormat: 'ddd',
   phrases: DayPickerPhrases,
   dayAriaLabelFormat: undefined,
 };
@@ -751,7 +751,6 @@ class DayPicker extends BaseClass {
   adjustDayPickerHeight(newMonthHeight) {
     const monthHeight = newMonthHeight + MONTH_PADDING;
     if (monthHeight !== this.calendarMonthGridHeight) {
-      this.transitionContainer.style.height = `${monthHeight}px`;
       if (!this.calendarMonthGridHeight) {
         setTimeout(() => {
           this.setState({ hasSetHeight: true });
@@ -801,12 +800,20 @@ class DayPicker extends BaseClass {
       return null;
     }
 
-    const onNextMonthClick =
-      orientation === VERTICAL_SCROLLABLE ? this.multiplyScrollableMonths : this.onNextMonthClick;
+    let onNextMonthClick;
+    if (orientation === VERTICAL_SCROLLABLE) {
+      onNextMonthClick = this.multiplyScrollableMonths;
+    } else {
+      onNextMonthClick = (e) => {
+        this.onNextMonthClick(null, e);
+      };
+    }
 
     return (
       <DayPickerNavigation
-        onPrevMonthClick={this.onPrevMonthClick}
+        onPrevMonthClick={(e) => {
+          this.onPrevMonthClick(null, e);
+        }}
         onNextMonthClick={onNextMonthClick}
         navPrev={navPrev}
         navNext={navNext}
@@ -908,7 +915,6 @@ class DayPicker extends BaseClass {
       styles,
       theme,
       phrases,
-      verticalHeight,
       dayAriaLabelFormat,
       noBorder,
       transitionDuration,
@@ -931,14 +937,6 @@ class DayPicker extends BaseClass {
     }
 
     const verticalScrollable = orientation === VERTICAL_SCROLLABLE;
-    let height;
-    if (isHorizontal) {
-      height = this.calendarMonthGridHeight;
-    } else if (this.isVertical() && !verticalScrollable && !withPortal) {
-      // If the user doesn't set a desired height,
-      // we default back to this kind of made-up value that generally looks good
-      height = verticalHeight || 1.75 * calendarMonthWidth;
-    }
 
     const isCalendarMonthGridAnimating = monthTransition !== null;
 
@@ -976,16 +974,12 @@ class DayPicker extends BaseClass {
     const fullHorizontalWidth = wrapperHorizontalWidth + calendarInfoPanelWidth + 1;
 
     const transitionContainerStyle = {
-      width: isHorizontal && wrapperHorizontalWidth,
-      height,
-    };
-
-    const dayPickerWrapperStyle = {
-      width: isHorizontal && wrapperHorizontalWidth,
+      width: '100%',
+      height: 'auto',
     };
 
     const dayPickerStyle = {
-      width: isHorizontal && fullHorizontalWidth,
+      width: '100%',
 
       // These values are to center the datepicker (approximately) on the page
       marginLeft: isHorizontal && withPortal ? -fullHorizontalWidth / 2 : null,
@@ -1011,10 +1005,7 @@ class DayPicker extends BaseClass {
           {(calendarInfoPositionTop || calendarInfoPositionBefore) && calendarInfo}
 
           <div
-            {...css(
-              dayPickerWrapperStyle,
-              calendarInfoIsInline && isHorizontal && styles.DayPicker_wrapper__horizontal,
-            )}
+            {...css(calendarInfoIsInline && isHorizontal && styles.DayPicker_wrapper__horizontal)}
           >
             <div
               {...css(
@@ -1097,7 +1088,7 @@ class DayPicker extends BaseClass {
                     closeKeyboardShortcutsPanel={this.closeKeyboardShortcutsPanel}
                     phrases={phrases}
                   />
-                )}
+              )}
             </div>
           </div>
 

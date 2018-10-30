@@ -21,7 +21,7 @@ const propTypes = forbidExtraProps({
   ...withStylesPropTypes,
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
-  minMonth: momentPropTypes.momentDurationObjObj,
+  minMonth: momentPropTypes.momentObj,
   currentMonth: momentPropTypes.momentObj,
   orientation: ScrollableOrientationShape,
 
@@ -112,18 +112,14 @@ function DayPickerNavigation({
       {...css(
         styles.DayPickerNavigation,
         isHorizontal && styles.DayPickerNavigation__horizontal,
-        ...(isVertical
-          ? [
-              styles.DayPickerNavigation__vertical,
-              isDefaultNav && styles.DayPickerNavigation__verticalDefault,
-            ]
-          : []),
-        ...(isVerticalScrollable
-          ? [
-              styles.DayPickerNavigation__verticalScrollable,
-              isDefaultNav && styles.DayPickerNavigation__verticalScrollableDefault,
-            ]
-          : []),
+        ...(isVertical && [
+          styles.DayPickerNavigation__vertical,
+          isDefaultNav && styles.DayPickerNavigation__verticalDefault,
+        ]),
+        ...(isVerticalScrollable && [
+          styles.DayPickerNavigation__verticalScrollable,
+          isDefaultNav && styles.DayPickerNavigation__verticalScrollableDefault,
+        ]),
       )}
     >
       {!isVerticalScrollable && (
@@ -177,32 +173,24 @@ function DayPickerNavigation({
         {...css(
           styles.DayPickerNavigation_button,
           isDefaultNavNext && styles.DayPickerNavigation_button__default,
-          ...(isHorizontal
-            ? [
-                styles.DayPickerNavigation_button__horizontal,
-                ...(isDefaultNavNext
-                  ? [
-                      styles.DayPickerNavigation_button__horizontalDefault,
-                      isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault,
-                      !isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault,
-                    ]
-                  : []),
-              ]
-            : []),
-          ...(isVertical
-            ? [
-                styles.DayPickerNavigation_button__vertical,
-                styles.DayPickerNavigation_nextButton__vertical,
-                ...(isDefaultNavNext
-                  ? [
-                      styles.DayPickerNavigation_button__verticalDefault,
-                      styles.DayPickerNavigation_nextButton__verticalDefault,
-                      isVerticalScrollable &&
-                        styles.DayPickerNavigation_nextButton__verticalScrollableDefault,
-                    ]
-                  : []),
-              ]
-            : []),
+          ...(isHorizontal && [
+            styles.DayPickerNavigation_button__horizontal,
+            ...(isDefaultNavNext && [
+              styles.DayPickerNavigation_button__horizontalDefault,
+              isRTL && styles.DayPickerNavigation_leftButton__horizontalDefault,
+              !isRTL && styles.DayPickerNavigation_rightButton__horizontalDefault,
+            ]),
+          ]),
+          ...(isVertical && [
+            styles.DayPickerNavigation_button__vertical,
+            styles.DayPickerNavigation_nextButton__vertical,
+            ...(isDefaultNavNext && [
+              styles.DayPickerNavigation_button__verticalDefault,
+              styles.DayPickerNavigation_nextButton__verticalDefault,
+              isVerticalScrollable
+                && styles.DayPickerNavigation_nextButton__verticalScrollableDefault,
+            ]),
+          ]),
         )}
         aria-label={phrases.jumpToNextMonth}
         onClick={onNextMonthClick}
