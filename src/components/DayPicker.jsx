@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { forbidExtraProps, mutuallyExclusiveProps, nonNegativeInteger } from 'airbnb-prop-types';
 import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
-import momentPropTypes from 'react-moment-proptypes';
 
 import moment from 'moment';
 import throttle from 'lodash/throttle';
@@ -77,7 +76,6 @@ const propTypes = forbidExtraProps({
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
   noNavButtons: PropTypes.bool,
-  minMonth: momentPropTypes.momentObj,
   onPrevMonthClick: PropTypes.func,
   onNextMonthClick: PropTypes.func,
   onMonthChange: PropTypes.func,
@@ -86,11 +84,7 @@ const propTypes = forbidExtraProps({
 
   // month props
   renderMonthText: mutuallyExclusiveProps(PropTypes.func, 'renderMonthText', 'renderMonthElement'),
-  renderMonthElement: mutuallyExclusiveProps(
-    PropTypes.func,
-    'renderMonthText',
-    'renderMonthElement',
-  ),
+  renderMonthElement: mutuallyExclusiveProps(PropTypes.func, 'renderMonthText', 'renderMonthElement'),
 
   // day props
   modifiers: PropTypes.objectOf(PropTypes.objectOf(ModifiersShape)),
@@ -140,7 +134,6 @@ export const defaultProps = {
   navPrev: null,
   navNext: null,
   noNavButtons: false,
-  minMonth: null,
   onPrevMonthClick() {},
   onNextMonthClick() {},
   onMonthChange() {},
@@ -169,7 +162,7 @@ export const defaultProps = {
 
   // internationalization
   monthFormat: 'MMMM YYYY',
-  weekDayFormat: 'ddd',
+  weekDayFormat: 'dd',
   phrases: DayPickerPhrases,
   dayAriaLabelFormat: undefined,
 };
@@ -188,10 +181,9 @@ class DayPicker extends BaseClass {
 
     const { horizontalMonthPadding } = props;
 
-    const translationValue =
-      props.isRTL && this.isHorizontal()
-        ? -getCalendarMonthWidth(props.daySize, horizontalMonthPadding)
-        : 0;
+    const translationValue = props.isRTL && this.isHorizontal()
+      ? -getCalendarMonthWidth(props.daySize, horizontalMonthPadding)
+      : 0;
 
     this.hasSetInitialVisibleMonth = !props.hidden;
     this.state = {
@@ -200,7 +192,7 @@ class DayPicker extends BaseClass {
       translationValue,
       scrollableMonthMultiple: 1,
       calendarMonthWidth: getCalendarMonthWidth(props.daySize, horizontalMonthPadding),
-      focusedDate: !props.hidden || props.isFocused ? focusedDate : null,
+      focusedDate: (!props.hidden || props.isFocused) ? focusedDate : null,
       nextFocusedDate: null,
       showKeyboardShortcuts: props.showKeyboardShortcuts,
       onKeyboardShortcutsPanelClose() {},
@@ -271,11 +263,18 @@ class DayPicker extends BaseClass {
       }
     }
 
-    const { daySize, isFocused: prevIsFocused, renderMonthText: prevRenderMonthText } = this.props;
+    const {
+      daySize,
+      isFocused: prevIsFocused,
+      renderMonthText: prevRenderMonthText,
+    } = this.props;
 
     if (nextProps.daySize !== daySize) {
       this.setState({
-        calendarMonthWidth: getCalendarMonthWidth(nextProps.daySize, horizontalMonthPadding),
+        calendarMonthWidth: getCalendarMonthWidth(
+          nextProps.daySize,
+          horizontalMonthPadding,
+        ),
       });
     }
 
@@ -327,12 +326,14 @@ class DayPicker extends BaseClass {
   }
 
   componentDidUpdate(prevProps) {
-    const { orientation, daySize, isFocused, numberOfMonths } = this.props;
+    const {
+      orientation, daySize, isFocused, numberOfMonths,
+    } = this.props;
     const { focusedDate, monthTitleHeight } = this.state;
 
     if (
-      this.isHorizontal() &&
-      (orientation !== prevProps.orientation || daySize !== prevProps.daySize)
+      this.isHorizontal()
+      && (orientation !== prevProps.orientation || daySize !== prevProps.daySize)
     ) {
       const visibleCalendarWeeks = this.calendarMonthWeeks.slice(1, numberOfMonths + 1);
       const calendarMonthWeeksHeight = Math.max(0, ...visibleCalendarWeeks) * (daySize - 1);
@@ -463,6 +464,7 @@ class DayPicker extends BaseClass {
       });
     }
   }
+
 
   onPrevMonthClick(e) {
     if (e) e.preventDefault();
@@ -605,14 +607,11 @@ class DayPicker extends BaseClass {
   }
 
   setMonthTitleHeight(monthTitleHeight) {
-    this.setState(
-      {
-        monthTitleHeight,
-      },
-      () => {
-        this.calculateAndSetDayPickerHeight();
-      },
-    );
+    this.setState({
+      monthTitleHeight,
+    }, () => {
+      this.calculateAndSetDayPickerHeight();
+    });
   }
 
   setCalendarMonthWeeks(currentMonth) {
@@ -739,35 +738,33 @@ class DayPicker extends BaseClass {
       newFocusedDate = this.getFocusedDay(newMonth);
     }
 
-    this.setState(
-      {
-        currentMonth: newMonth,
-        monthTransition: null,
-        translationValue: isRTL && this.isHorizontal() ? -calendarMonthWidth : 0,
-        nextFocusedDate: null,
-        focusedDate: newFocusedDate,
-      },
-      () => {
-        // we don't want to focus on the relevant calendar day after a month transition
-        // if the user is navigating around using a mouse
-        if (withMouseInteractions) {
-          const activeElement = getActiveElement();
-          if (
-            activeElement &&
-            activeElement !== document.body &&
-            this.container.contains(activeElement) &&
-            activeElement.blur
-          ) {
-            activeElement.blur();
-          }
+    this.setState({
+      currentMonth: newMonth,
+      monthTransition: null,
+      translationValue: (isRTL && this.isHorizontal()) ? -calendarMonthWidth : 0,
+      nextFocusedDate: null,
+      focusedDate: newFocusedDate,
+    }, () => {
+      // we don't want to focus on the relevant calendar day after a month transition
+      // if the user is navigating around using a mouse
+      if (withMouseInteractions) {
+        const activeElement = getActiveElement();
+        if (
+          activeElement
+          && activeElement !== document.body
+          && this.container.contains(activeElement)
+          && activeElement.blur
+        ) {
+          activeElement.blur();
         }
-      },
-    );
+      }
+    });
   }
 
   adjustDayPickerHeight(newMonthHeight) {
     const monthHeight = newMonthHeight + MONTH_PADDING;
     if (monthHeight !== this.calendarMonthGridHeight) {
+      this.transitionContainer.style.height = `${monthHeight}px`;
       if (!this.calendarMonthGridHeight) {
         setTimeout(() => {
           this.setState({ hasSetHeight: true });
@@ -811,31 +808,29 @@ class DayPicker extends BaseClass {
   }
 
   renderNavigation() {
-    const { navPrev, navNext, noNavButtons, orientation, phrases, isRTL, minMonth } = this.props;
+    const {
+      navPrev,
+      navNext,
+      noNavButtons,
+      orientation,
+      phrases,
+      isRTL,
+    } = this.props;
 
     if (noNavButtons) {
       return null;
     }
 
-    let onNextMonthClick;
-    if (orientation === VERTICAL_SCROLLABLE) {
-      onNextMonthClick = this.multiplyScrollableMonths;
-    } else {
-      onNextMonthClick = (e) => {
-        this.onNextMonthClick(null, e);
-      };
-    }
+    const onNextMonthClick = orientation === VERTICAL_SCROLLABLE
+      ? this.multiplyScrollableMonths
+      : this.onNextMonthClick;
 
     return (
       <DayPickerNavigation
-        onPrevMonthClick={(e) => {
-          this.onPrevMonthClick(null, e);
-        }}
+        onPrevMonthClick={this.onPrevMonthClick}
         onNextMonthClick={onNextMonthClick}
         navPrev={navPrev}
         navNext={navNext}
-        minMonth={minMonth}
-        currentMonth={this.state.currentMonth}
         orientation={orientation}
         phrases={phrases}
         isRTL={isRTL}
@@ -844,7 +839,13 @@ class DayPicker extends BaseClass {
   }
 
   renderWeekHeader(index) {
-    const { daySize, horizontalMonthPadding, orientation, weekDayFormat, styles } = this.props;
+    const {
+      daySize,
+      horizontalMonthPadding,
+      orientation,
+      weekDayFormat,
+      styles,
+    } = this.props;
     const { calendarMonthWidth } = this.state;
     const verticalScrollable = orientation === VERTICAL_SCROLLABLE;
     const horizontalStyle = {
@@ -865,15 +866,11 @@ class DayPicker extends BaseClass {
 
     const header = [];
     for (let i = 0; i < 7; i += 1) {
-      header.push(
+      header.push((
         <li key={i} {...css(styles.DayPicker_weekHeader_li, { width: daySize })}>
-          <small>
-            {moment()
-              .day((i + firstDayOfWeek) % 7)
-              .format(weekDayFormat)}
-          </small>
-        </li>,
-      );
+          <small>{moment().day((i + firstDayOfWeek) % 7).format(weekDayFormat)}</small>
+        </li>
+      ));
     }
 
     return (
@@ -887,7 +884,9 @@ class DayPicker extends BaseClass {
         )}
         key={`week-${index}`}
       >
-        <ul {...css(styles.DayPicker_weekHeader_ul)}>{header}</ul>
+        <ul {...css(styles.DayPicker_weekHeader_ul)}>
+          {header}
+        </ul>
       </div>
     );
   }
@@ -932,6 +931,7 @@ class DayPicker extends BaseClass {
       styles,
       theme,
       phrases,
+      verticalHeight,
       dayAriaLabelFormat,
       noBorder,
       transitionDuration,
@@ -939,11 +939,7 @@ class DayPicker extends BaseClass {
       horizontalMonthPadding,
     } = this.props;
 
-    const {
-      reactDates: {
-        spacing: { dayPickerHorizontalPadding },
-      },
-    } = theme;
+    const { reactDates: { spacing: { dayPickerHorizontalPadding } } } = theme;
 
     const isHorizontal = this.isHorizontal();
 
@@ -954,6 +950,14 @@ class DayPicker extends BaseClass {
     }
 
     const verticalScrollable = orientation === VERTICAL_SCROLLABLE;
+    let height;
+    if (isHorizontal) {
+      height = this.calendarMonthGridHeight;
+    } else if (this.isVertical() && !verticalScrollable && !withPortal) {
+      // If the user doesn't set a desired height,
+      // we default back to this kind of made-up value that generally looks good
+      height = verticalHeight || 1.75 * calendarMonthWidth;
+    }
 
     const isCalendarMonthGridAnimating = monthTransition !== null;
 
@@ -975,28 +979,33 @@ class DayPicker extends BaseClass {
     const calendarInfo = renderCalendarInfo && (
       <div
         ref={this.setCalendarInfoRef}
-        {...css(calendarInfoIsInline && styles.DayPicker_calendarInfo__horizontal)}
+        {...css((calendarInfoIsInline) && styles.DayPicker_calendarInfo__horizontal)}
       >
         {renderCalendarInfo()}
       </div>
     );
 
-    const calendarInfoPanelWidth =
-      renderCalendarInfo && calendarInfoIsInline ? calendarInfoWidth : 0;
+    const calendarInfoPanelWidth = renderCalendarInfo && calendarInfoIsInline
+      ? calendarInfoWidth
+      : 0;
 
     const firstVisibleMonthIndex = this.getFirstVisibleIndex();
-    const wrapperHorizontalWidth =
-      calendarMonthWidth * numberOfMonths + 2 * dayPickerHorizontalPadding;
+    const wrapperHorizontalWidth = (calendarMonthWidth * numberOfMonths)
+      + (2 * dayPickerHorizontalPadding);
     // Adding `1px` because of whitespace between 2 inline-block
     const fullHorizontalWidth = wrapperHorizontalWidth + calendarInfoPanelWidth + 1;
 
     const transitionContainerStyle = {
-      width: '100%',
-      height: 'auto',
+      width: isHorizontal && wrapperHorizontalWidth,
+      height,
+    };
+
+    const dayPickerWrapperStyle = {
+      width: isHorizontal && wrapperHorizontalWidth,
     };
 
     const dayPickerStyle = {
-      width: '100%',
+      width: isHorizontal && fullHorizontalWidth,
 
       // These values are to center the datepicker (approximately) on the page
       marginLeft: isHorizontal && withPortal ? -fullHorizontalWidth / 2 : null,
@@ -1022,8 +1031,12 @@ class DayPicker extends BaseClass {
           {(calendarInfoPositionTop || calendarInfoPositionBefore) && calendarInfo}
 
           <div
-            {...css(calendarInfoIsInline && isHorizontal && styles.DayPicker_wrapper__horizontal)}
+            {...css(
+              dayPickerWrapperStyle,
+              calendarInfoIsInline && isHorizontal && styles.DayPicker_wrapper__horizontal,
+            )}
           >
+
             <div
               {...css(
                 styles.DayPicker_weekHeaders,
@@ -1038,13 +1051,9 @@ class DayPicker extends BaseClass {
             <div // eslint-disable-line jsx-a11y/no-noninteractive-element-interactions
               {...css(styles.DayPicker_focusRegion)}
               ref={this.setContainerRef}
-              onClick={e => {
-                e.stopPropagation();
-              }}
+              onClick={(e) => { e.stopPropagation(); }}
               onKeyDown={this.onKeyDown}
-              onMouseUp={() => {
-                this.setState({ withMouseInteractions: true });
-              }}
+              onMouseUp={() => { this.setState({ withMouseInteractions: true }); }}
               role="region"
               tabIndex={-1}
             >
@@ -1095,18 +1104,18 @@ class DayPicker extends BaseClass {
                 {verticalScrollable && this.renderNavigation()}
               </div>
 
-              {!isTouch &&
-                !hideKeyboardShortcutsPanel && (
-                  <DayPickerKeyboardShortcuts
-                    block={this.isVertical() && !withPortal}
-                    buttonLocation={keyboardShortcutButtonLocation}
-                    showKeyboardShortcutsPanel={showKeyboardShortcuts}
-                    openKeyboardShortcutsPanel={this.openKeyboardShortcutsPanel}
-                    closeKeyboardShortcutsPanel={this.closeKeyboardShortcutsPanel}
-                    phrases={phrases}
-                  />
+              {!isTouch && !hideKeyboardShortcutsPanel && (
+                <DayPickerKeyboardShortcuts
+                  block={this.isVertical() && !withPortal}
+                  buttonLocation={keyboardShortcutButtonLocation}
+                  showKeyboardShortcutsPanel={showKeyboardShortcuts}
+                  openKeyboardShortcutsPanel={this.openKeyboardShortcutsPanel}
+                  closeKeyboardShortcutsPanel={this.closeKeyboardShortcutsPanel}
+                  phrases={phrases}
+                />
               )}
             </div>
+
           </div>
 
           {(calendarInfoPositionBottom || calendarInfoPositionAfter) && calendarInfo}
@@ -1121,131 +1130,146 @@ DayPicker.defaultProps = defaultProps;
 
 export { DayPicker as PureDayPicker };
 
-export default withStyles(
-  ({ reactDates: { color, font, noScrollBarOnVerticalScrollable, spacing, zIndex } }) => ({
-    DayPicker: {
-      background: color.background,
-      position: 'relative',
-      textAlign: 'left',
+export default withStyles(({
+  reactDates: {
+    color,
+    font,
+    noScrollBarOnVerticalScrollable,
+    spacing,
+    zIndex,
+  },
+}) => ({
+  DayPicker: {
+    background: color.background,
+    position: 'relative',
+    textAlign: 'left',
+    '@media (min-width: 640px)': {
+      background: color.desktop.background,
     },
+  },
 
-    DayPicker__horizontal: {
-      background: color.background,
+  DayPicker__horizontal: {
+    // background: color.background,
+    '@media (min-width: 640px)': {
+      background: color.desktop.background,
     },
+  },
 
-    DayPicker__verticalScrollable: {
-      height: '100%',
-    },
+  DayPicker__verticalScrollable: {
+    height: '100%',
+  },
 
-    DayPicker__hidden: {
-      visibility: 'hidden',
-    },
+  DayPicker__hidden: {
+    visibility: 'hidden',
+  },
 
-    DayPicker__withBorder: {
-      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.07)',
-      borderRadius: 3,
-    },
+  DayPicker__withBorder: {
+    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.07)',
+    borderRadius: 3,
+  },
 
-    DayPicker_portal__horizontal: {
-      boxShadow: 'none',
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-    },
+  DayPicker_portal__horizontal: {
+    boxShadow: 'none',
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+  },
 
-    DayPicker_portal__vertical: {
-      position: 'initial',
-    },
+  DayPicker_portal__vertical: {
+    position: 'initial',
+  },
 
-    DayPicker_focusRegion: {
-      outline: 'none',
-    },
+  DayPicker_focusRegion: {
+    outline: 'none',
+  },
 
-    DayPicker_calendarInfo__horizontal: {
-      display: 'inline-block',
-      verticalAlign: 'top',
-    },
+  DayPicker_calendarInfo__horizontal: {
+    display: 'inline-block',
+    verticalAlign: 'top',
+  },
 
-    DayPicker_wrapper__horizontal: {
-      display: 'inline-block',
-      verticalAlign: 'top',
-    },
+  DayPicker_wrapper__horizontal: {
+    display: 'inline-block',
+    verticalAlign: 'top',
+  },
 
-    DayPicker_weekHeaders: {
-      position: 'relative',
-    },
+  DayPicker_weekHeaders: {
+    position: 'relative',
+  },
 
-    DayPicker_weekHeaders__horizontal: {
-      marginLeft: spacing.dayPickerHorizontalPadding,
-    },
+  DayPicker_weekHeaders__horizontal: {
+    marginLeft: spacing.dayPickerHorizontalPadding,
+  },
 
-    DayPicker_weekHeader: {
-      color: color.placeholderText,
-      position: 'absolute',
-      top: 62,
-      zIndex: zIndex + 2,
-      textAlign: 'left',
-    },
+  DayPicker_weekHeader: {
+    color: color.placeholderText,
+    position: 'absolute',
+    top: 62,
+    zIndex: zIndex + 2,
+    textAlign: 'left',
+  },
 
-    DayPicker_weekHeader__vertical: {
-      left: '50%',
-    },
+  DayPicker_weekHeader__vertical: {
+    left: '50%',
+  },
 
-    DayPicker_weekHeader__verticalScrollable: {
-      top: 0,
-      display: 'table-row',
-      borderBottom: `1px solid ${color.core.border}`,
-      background: color.background,
-      marginLeft: 0,
-      left: 0,
-      width: '100%',
-      textAlign: 'center',
-    },
+  DayPicker_weekHeader__verticalScrollable: {
+    top: 0,
+    display: 'table-row',
+    borderBottom: `1px solid ${color.core.border}`,
+    background: color.background,
+    marginLeft: 0,
+    left: 0,
+    width: '100%',
+    textAlign: 'center',
+  },
 
-    DayPicker_weekHeader_ul: {
-      listStyle: 'none',
-      margin: '1px 0',
-      paddingLeft: 0,
-      paddingRight: 0,
-      fontSize: font.size,
+  DayPicker_weekHeader_ul: {
+    listStyle: 'none',
+    margin: '1px 0',
+    paddingLeft: 0,
+    paddingRight: 0,
+    fontSize: font.mobile.dayLabel,
+    '@media (min-width: 640px)': {
+      fontSize: font.desktop.dayLabel,
+      fontWeight: 500,
     },
+  },
 
-    DayPicker_weekHeader_li: {
-      display: 'inline-block',
-      textAlign: 'center',
-    },
+  DayPicker_weekHeader_li: {
+    display: 'inline-block',
+    textAlign: 'center',
+  },
 
-    DayPicker_transitionContainer: {
-      position: 'relative',
-      overflow: 'hidden',
-      borderRadius: 3,
-    },
+  DayPicker_transitionContainer: {
+    position: 'relative',
+    overflow: 'hidden',
+    borderRadius: 3,
+  },
 
-    DayPicker_transitionContainer__horizontal: {
-      transition: 'height 0.2s ease-in-out',
-    },
+  DayPicker_transitionContainer__horizontal: {
+    transition: 'height 0.2s ease-in-out',
+  },
 
-    DayPicker_transitionContainer__vertical: {
-      width: '100%',
-    },
+  DayPicker_transitionContainer__vertical: {
+    width: '100%',
+  },
 
-    DayPicker_transitionContainer__verticalScrollable: {
-      paddingTop: 20,
-      height: '100%',
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      right: 0,
-      left: 0,
-      overflowY: 'scroll',
-      ...(noScrollBarOnVerticalScrollable && {
-        '-webkitOverflowScrolling': 'touch',
-        '::-webkit-scrollbar': {
-          '-webkit-appearance': 'none',
-          display: 'none',
-        },
-      }),
-    },
-  }),
-  { pureComponent: pureComponentAvailable },
-)(DayPicker);
+  DayPicker_transitionContainer__verticalScrollable: {
+    paddingTop: 20,
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    overflowY: 'scroll',
+    ...(noScrollBarOnVerticalScrollable && {
+      '-webkitOverflowScrolling': 'touch',
+      '::-webkit-scrollbar': {
+        '-webkit-appearance': 'none',
+        display: 'none',
+      },
+    }),
+  },
+}), { pureComponent: pureComponentAvailable })(DayPicker);

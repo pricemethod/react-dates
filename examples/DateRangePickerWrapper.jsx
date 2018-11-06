@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import moment from 'moment';
 import omit from 'lodash/omit';
+import MediaQuery from 'react-responsive';
+
 
 import DateRangePicker from '../src/components/DateRangePicker';
 
@@ -138,14 +140,29 @@ class DateRangePickerWrapper extends React.Component {
 
     return (
       <div>
-        <DateRangePicker
-          {...props}
-          onDatesChange={this.onDatesChange}
-          onFocusChange={this.onFocusChange}
-          focusedInput={focusedInput}
-          startDate={startDate}
-          endDate={endDate}
-        />
+        <MediaQuery query="(max-width: 600px)">
+          <DateRangePicker
+            {...props}
+            onDatesChange={this.onDatesChange}
+            onFocusChange={this.onFocusChange}
+            focusedInput={focusedInput}
+            startDate={startDate}
+            endDate={endDate}
+            numberOfMonths={3}
+          />
+        </MediaQuery>
+        <MediaQuery query="(min-width: 601px)">
+          <DateRangePicker
+            {...props}
+            onDatesChange={this.onDatesChange}
+            onFocusChange={this.onFocusChange}
+            focusedInput={focusedInput}
+            startDate={startDate}
+            endDate={endDate}
+            numberOfMonths={1}
+          />
+
+        </MediaQuery>
       </div>
     );
   }

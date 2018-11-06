@@ -13,9 +13,7 @@ import BaseClass, { pureComponentAvailable } from '../utils/baseClass';
 import { DAY_SIZE } from '../constants';
 import DefaultTheme from '../theme/DefaultTheme';
 
-const {
-  reactDates: { color },
-} = DefaultTheme;
+const { reactDates: { color } } = DefaultTheme;
 
 function getStyles(stylesObj, isHovered) {
   if (!stylesObj) return null;
@@ -257,7 +255,9 @@ class CustomizableCalendarDay extends BaseClass {
   }
 
   onKeyDown(day, e) {
-    const { onDayClick } = this.props;
+    const {
+      onDayClick,
+    } = this.props;
 
     const { key } = e;
     if (key === 'Enter' || key === ' ') {
@@ -323,14 +323,11 @@ class CustomizableCalendarDay extends BaseClass {
           modifiers.has('today') && getStyles(todayStylesWithHover, isHovered),
           modifiers.has('first-day-of-week') && getStyles(firstDayOfWeekStylesWithHover, isHovered),
           modifiers.has('last-day-of-week') && getStyles(lastDayOfWeekStylesWithHover, isHovered),
-          modifiers.has('highlighted-calendar') &&
-            getStyles(highlightedCalendarStylesWithHover, isHovered),
-          modifiers.has('blocked-minimum-nights') &&
-            getStyles(blockedMinNightsStylesWithHover, isHovered),
+          modifiers.has('highlighted-calendar') && getStyles(highlightedCalendarStylesWithHover, isHovered),
+          modifiers.has('blocked-minimum-nights') && getStyles(blockedMinNightsStylesWithHover, isHovered),
           modifiers.has('blocked-calendar') && getStyles(blockedCalendarStylesWithHover, isHovered),
           hoveredSpan && getStyles(hoveredSpanStylesWithHover, isHovered),
-          modifiers.has('after-hovered-start') &&
-            getStyles(afterHoveredStartStylesWithHover, isHovered),
+          modifiers.has('after-hovered-start') && getStyles(afterHoveredStartStylesWithHover, isHovered),
           modifiers.has('selected-span') && getStyles(selectedSpanStylesWithHover, isHovered),
           modifiers.has('last-in-range') && getStyles(lastInRangeStylesWithHover, isHovered),
           selected && getStyles(selectedStylesWithHover, isHovered),
@@ -341,21 +338,11 @@ class CustomizableCalendarDay extends BaseClass {
         role="button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
         ref={this.setButtonRef}
         aria-label={ariaLabel}
-        onMouseEnter={e => {
-          this.onDayMouseEnter(day, e);
-        }}
-        onMouseLeave={e => {
-          this.onDayMouseLeave(day, e);
-        }}
-        onMouseUp={e => {
-          e.currentTarget.blur();
-        }}
-        onClick={e => {
-          this.onDayClick(day, e);
-        }}
-        onKeyDown={e => {
-          this.onKeyDown(day, e);
-        }}
+        onMouseEnter={(e) => { this.onDayMouseEnter(day, e); }}
+        onMouseLeave={(e) => { this.onDayMouseLeave(day, e); }}
+        onMouseUp={(e) => { e.currentTarget.blur(); }}
+        onClick={(e) => { this.onDayClick(day, e); }}
+        onKeyDown={(e) => { this.onKeyDown(day, e); }}
         tabIndex={tabIndex}
       >
         {renderDayContents ? renderDayContents(day, modifiers) : day.format('D')}
@@ -368,22 +355,19 @@ CustomizableCalendarDay.propTypes = propTypes;
 CustomizableCalendarDay.defaultProps = defaultProps;
 
 export { CustomizableCalendarDay as PureCustomizableCalendarDay };
-export default withStyles(
-  ({ reactDates: { font } }) => ({
-    CalendarDay: {
-      boxSizing: 'border-box',
-      cursor: 'pointer',
-      fontSize: font.size,
-      textAlign: 'center',
+export default withStyles(({ reactDates: { font } }) => ({
+  CalendarDay: {
+    boxSizing: 'border-box',
+    cursor: 'pointer',
+    fontSize: font.size,
+    textAlign: 'center',
 
-      ':active': {
-        outline: 0,
-      },
+    ':active': {
+      outline: 0,
     },
+  },
 
-    CalendarDay__defaultCursor: {
-      cursor: 'default',
-    },
-  }),
-  { pureComponent: pureComponentAvailable },
-)(CustomizableCalendarDay);
+  CalendarDay__defaultCursor: {
+    cursor: 'default',
+  },
+}), { pureComponent: pureComponentAvailable })(CustomizableCalendarDay);

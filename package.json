@@ -1,5 +1,5 @@
 {
-  "name": "@lyric-travel/react-dates",
+  "name": "react-dates",
   "version": "18.2.1",
   "description": "A responsive and accessible date range picker component built with React",
   "main": "index.js",
@@ -17,13 +17,14 @@
     "mocha": "mocha ./test/_helpers",
     "storybook:uninstall": "npm uninstall --no-save @storybook/react && rimraf node_modules/@storybook node_modules/react-modal node_modules/react-dom-factories",
     "react": "enzyme-adapter-react-install 16",
+    "pretest": "npm run --silent lint",
     "pretests-only": "npm run react",
     "tests-only": "npm run mocha --silent test",
     "pretests-karma": "npm run react",
     "tests-karma": "karma start",
     "test": "npm run build && npm run tests-only",
-    "storybook": "start-storybook -p 6007",
-    "storybook:css": "npm run build:css && start-storybook -p 6007 -c .storybook-css",
+    "storybook": "start-storybook -p 6006",
+    "storybook:css": "npm run build:css && start-storybook -p 6006 -c .storybook-css",
     "tag": "git tag v$npm_package_version",
     "gh-pages:clean": "rimraf _gh-pages",
     "gh-pages:build": "$(npm bin)/build-storybook -o _gh-pages",
@@ -32,7 +33,7 @@
     "version:patch": "npm --no-git-tag-version version patch",
     "version:minor": "npm --no-git-tag-version version minor",
     "version:major": "npm --no-git-tag-version version major",
-    "preversion": "npm run test",
+    "preversion": "npm run test && npm run check-changelog && npm run check-only-changelog-changed",
     "postversion": "git commit package.json CHANGELOG.md -m \"Version $npm_package_version\" && npm run tag && git push && git push --tags && npm publish --registry=https://registry.npmjs.org/",
     "prepublish": "in-publish && safe-publish-latest && npm run build || not-in-publish",
     "postpublish": "[ \"${npm_config_tag:-latest}\" != latest ] || npm run gh-pages",
@@ -110,7 +111,6 @@
     "why-did-you-update": "^0.1.1"
   },
   "dependencies": {
-    "@lyric-travel/harmony": "^3.9.15",
     "airbnb-prop-types": "^2.10.0",
     "consolidated-events": "^1.1.1 || ^2.0.0",
     "is-touch-device": "^1.0.1",
@@ -122,6 +122,7 @@
     "react-moment-proptypes": "^1.6.0",
     "react-outside-click-handler": "^1.2.0",
     "react-portal": "^4.1.5",
+    "react-responsive": "^6.0.1",
     "react-with-direction": "^1.3.0",
     "react-with-styles": "^3.2.0",
     "react-with-styles-interface-css": "^4.0.2"

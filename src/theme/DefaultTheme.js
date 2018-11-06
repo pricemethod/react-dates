@@ -1,26 +1,24 @@
-import { LyricColors } from '@lyric-travel/harmony';
-
 const core = {
-  white: LyricColors.Primary.White,
-  gray: '#484848',
-  grayLight: '#82888a',
-  grayLighter: '#cacccd',
-  grayLightest: '#f2f2f2',
+  white: '#fff',
+  gray: '#4A4A4A',
+  grayLight: '#9B9B9B',
+  grayLighter: '#CBCBCB',
+  grayLightest: '#F4F3F4',
 
-  borderMedium: '#c4c4c4',
+  borderMedium: '#CBCBCB',
   border: '#dbdbdb',
-  borderLight: '#e4e7e7',
-  borderLighter: '#eceeee',
+  borderLight: '#EAEAEA',
+  borderLighter: '#F4F3F4',
   borderBright: '#f4f5f5',
 
-  primary: LyricColors.Primary.Black,
-  primaryShade_1: LyricColors.Greyscale.Grey4,
-  primaryShade_2: LyricColors.Greyscale.Grey3,
-  primaryShade_3: LyricColors.Greyscale.Grey2,
-  primaryShade_4: LyricColors.Greyscale.Grey1,
-  primary_dark: LyricColors.Primary.Black,
+  primary: '#000',
+  primaryShade_1: '#4A4A4A',
+  primaryShade_2: '#9B9B9B',
+  primaryShade_3: '#CBCBCB',
+  primaryShade_4: '#E6E6E6',
+  primary_dark: '#222',
 
-  secondary: LyricColors.Primary.Black,
+  secondary: '#444',
 
   yellow: '#ffe8bc',
   yellow_dark: '#ffce71',
@@ -53,16 +51,23 @@ export default {
 
     color: {
       core,
-
       disabled: core.grayLightest,
-
-      background: LyricColors.Greyscale.Grey1,
+      background: core.white,
       backgroundDark: '#f2f2f2',
       backgroundFocused: core.white,
-      text: core.gray,
+      border: core.white,
+      text: core.primary,
       textDisabled: core.border,
-      textFocused: '#007a87',
+      textFocused: '#000',
       placeholderText: '#757575',
+      mobile: {
+        background: core.white,
+        dayBackground: core.grayLightest,
+      },
+      desktop: {
+        background: core.grayLightest,
+        dayBackground: core.white,
+      },
 
       outside: {
         backgroundColor: core.white,
@@ -90,42 +95,84 @@ export default {
         color: core.grayLighter,
         color_active: core.grayLighter,
         color_hover: core.grayLighter,
+        mobile: {
+          borderColor: core.white,
+        },
+        desktop: {
+          borderColor: core.borderLighter,
+        },
       },
 
       hoveredSpan: {
         backgroundColor: core.primaryShade_4,
         backgroundColor_active: core.primaryShade_3,
         backgroundColor_hover: core.primaryShade_4,
-        borderColor: core.primaryShade_3,
-        borderColor_active: core.primaryShade_3,
-        borderColor_hover: core.primaryShade_3,
+        borderColor: core.white,
+        borderColor_active: core.white,
+        borderColor_hover: core.white,
         color: core.secondary,
         color_active: core.secondary,
         color_hover: core.secondary,
+        mobile: {
+          borderColor: core.white,
+          borderColor_active: core.white,
+          borderColor_hover: core.white,
+          backgroundColor: core.primaryShade_3,
+        },
+        desktop: {
+          borderColor: core.borderLighter,
+          borderColor_active: core.borderLighter,
+          borderColor_hover: core.borderLighter,
+          backgroundColor: core.primaryShade_4,
+        },
       },
 
       selectedSpan: {
-        backgroundColor: core.primaryShade_2,
-        backgroundColor_active: core.primaryShade_1,
-        backgroundColor_hover: core.primaryShade_1,
-        borderColor: core.primaryShade_1,
-        borderColor_active: core.primary,
-        borderColor_hover: core.primary,
-        color: core.white,
-        color_active: core.white,
-        color_hover: core.white,
+        backgroundColor: core.primaryShade_3,
+        backgroundColor_active: core.primaryShade_4,
+        backgroundColor_hover: core.primaryShade_4,
+        borderColor: core.white,
+        borderColor_active: core.white,
+        borderColor_hover: core.white,
+        color: core.primary,
+        color_active: core.primary,
+        color_hover: core.primary,
+        mobile: {
+          backgroundColor: core.primaryShade_3,
+          borderColor: core.white,
+          borderColor_active: core.white,
+          borderColor_hover: core.white,
+        },
+        desktop: {
+          backgroundColor: core.primaryShade_3,
+          borderColor: core.borderLighter,
+          borderColor_active: core.borderLighter,
+          borderColor_hover: core.borderLighter,
+        },
       },
 
       selected: {
         backgroundColor: core.primary,
         backgroundColor_active: core.primary,
         backgroundColor_hover: core.primary,
-        borderColor: core.primary,
-        borderColor_active: core.primary,
-        borderColor_hover: core.primary,
+        borderColor: core.white,
+        borderColor_active: core.white,
+        borderColor_hover: core.white,
         color: core.white,
         color_active: core.white,
         color_hover: core.white,
+        mobile: {
+          backgroundColor: core.primary,
+          borderColor: core.white,
+          borderColor_active: core.white,
+          borderColor_hover: core.white,
+        },
+        desktop: {
+          backgroundColor: core.primary,
+          borderColor: core.borderLighter,
+          borderColor_active: core.borderLighter,
+          borderColor_hover: core.borderLighter,
+        },
       },
 
       blocked_calendar: {
@@ -150,6 +197,16 @@ export default {
         color: core.grayLighter,
         color_active: core.grayLighter,
         color_hover: core.grayLighter,
+        mobile: {
+          borderColor: core.white,
+          borderColor_active: core.white,
+          borderColor_hover: core.white,
+        },
+        desktop: {
+          borderColor: core.borderLighter,
+          borderColor_active: core.borderLighter,
+          borderColor_hover: core.borderLighter,
+        },
       },
     },
 
@@ -170,6 +227,12 @@ export default {
       displayTextPaddingHorizontal_small: undefined,
       displayTextPaddingLeft_small: 7,
       displayTextPaddingRight_small: 7,
+      mobile: {
+        captionPaddingTop: 22,
+      },
+      desktop: {
+        captionPaddingTop: 12,
+      },
     },
 
     sizing: {
@@ -182,9 +245,7 @@ export default {
 
     font: {
       size: 14,
-      daySizeSmall: 16,
-      daySizeLarge: 42,
-      captionSize: 36,
+      captionSize: 18,
       input: {
         size: 19,
         lineHeight: '24px',
@@ -192,6 +253,16 @@ export default {
         lineHeight_small: '18px',
         letterSpacing_small: '0.2px',
         styleDisabled: 'italic',
+      },
+      mobile: {
+        size: 18,
+        captionSize: 24,
+        dayLabel: 12,
+      },
+      desktop: {
+        size: 36,
+        captionSize: 36,
+        dayLabel: 16,
       },
     },
   },

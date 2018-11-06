@@ -5,6 +5,7 @@ import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import moment from 'moment';
 import omit from 'lodash/omit';
+import MediaQuery from 'react-responsive';
 
 import DayPickerRangeController from '../src/components/DayPickerRangeController';
 
@@ -77,7 +78,7 @@ const defaultProps = {
   verticalHeight: undefined,
   withPortal: false,
   initialVisibleMonth: null,
-  numberOfMonths: 1,
+  numberOfMonths: 2,
   onOutsideClick() {},
   keepOpenOnDateSelect: false,
   renderCalendarInfo: null,
@@ -144,14 +145,29 @@ class DayPickerRangeControllerWrapper extends React.Component {
           </div>
         )}
 
-        <DayPickerRangeController
-          {...props}
-          onDatesChange={this.onDatesChange}
-          onFocusChange={this.onFocusChange}
-          focusedInput={focusedInput}
-          startDate={startDate}
-          endDate={endDate}
-        />
+        <MediaQuery query="(max-width: 639px)">
+          <DayPickerRangeController
+            {...props}
+            onDatesChange={this.onDatesChange}
+            onFocusChange={this.onFocusChange}
+            focusedInput={focusedInput}
+            startDate={startDate}
+            endDate={endDate}
+            numberOfMonths={3}
+          />
+        </MediaQuery>
+        <MediaQuery query="(min-width: 640px)">
+          <DayPickerRangeController
+            {...props}
+            onDatesChange={this.onDatesChange}
+            onFocusChange={this.onFocusChange}
+            focusedInput={focusedInput}
+            startDate={startDate}
+            endDate={endDate}
+            numberOfMonths={1}
+            daySize={75}
+          />
+        </MediaQuery>
       </div>
     );
   }
