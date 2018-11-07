@@ -4,6 +4,9 @@
 - []  ([#](https://github.com/airbnb/react-dates/pull/))
 -->
 
+## 18.2.2 - 18.2.8
+- [modify] CSS Styling to match Lyric
+
 ## 18.2.1
 - [fix] Add babel transform to handle PureComponent fallbacks ([#1452](https://github.com/airbnb/react-dates/pull/1452))
 
