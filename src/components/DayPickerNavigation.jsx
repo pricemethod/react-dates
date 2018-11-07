@@ -5,7 +5,6 @@ import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
 
 import { DayPickerNavigationPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
-import { pureComponentAvailable } from '../utils/baseClass';
 
 import LeftArrow from './LeftArrow';
 import RightArrow from './RightArrow';
@@ -313,5 +312,5 @@ export default withStyles(
       fill: color.text,
     },
   }),
-  { pureComponent: pureComponentAvailable },
+  { pureComponent: typeof React.PureComponent !== 'undefined' },
 )(DayPickerNavigation);
