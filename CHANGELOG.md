@@ -4,6 +4,9 @@
 - []  ([#](https://github.com/airbnb/react-dates/pull/))
 -->
 
+## 18.9
+- [modify] CSS styling for top nav section
+
 ## 18.2.2 - 18.2.8
 - [modify] CSS Styling to match Lyric
 
