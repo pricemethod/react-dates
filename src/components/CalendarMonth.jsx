@@ -279,7 +279,7 @@ export default withStyles(({ reactDates: { color, font, spacing } }) => ({
   },
 
   CalendarMonth_caption__verticalScrollable: {
-    paddingTop: 12,
+    paddingTop: 16,
     paddingBottom: 7,
   },
 }), { pureComponent: typeof React.PureComponent !== 'undefined' })(CalendarMonth);

@@ -1147,7 +1147,6 @@ export default withStyles(({
   },
 
   DayPicker__horizontal: {
-    // background: color.background,
     '@media (min-width: 640px)': {
       background: color.desktop.background,
     },
@@ -1202,7 +1201,7 @@ export default withStyles(({
   DayPicker_weekHeader: {
     color: color.placeholderText,
     position: 'absolute',
-    top: 62,
+    top: 67,
     zIndex: zIndex + 2,
     textAlign: 'left',
   },
@@ -1214,7 +1213,7 @@ export default withStyles(({
   DayPicker_weekHeader__verticalScrollable: {
     top: 0,
     display: 'table-row',
-    borderBottom: `1px solid ${color.core.border}`,
+    borderBottom: `1px solid ${color.core.borderLight}`,
     background: color.background,
     marginLeft: 0,
     left: 0,
@@ -1227,6 +1226,7 @@ export default withStyles(({
     margin: '1px 0',
     paddingLeft: 0,
     paddingRight: 0,
+    paddingBottom: 4,
     fontSize: font.mobile.dayLabel,
     '@media (min-width: 640px)': {
       fontSize: font.desktop.dayLabel,

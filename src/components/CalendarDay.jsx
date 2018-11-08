@@ -174,7 +174,7 @@ export default withStyles(
       boxSizing: 'border-box',
       cursor: 'pointer',
       fontSize: font.mobile.size,
-      fontWeight: 300,
+      fontWeight: 400,
       textAlign: 'center',
 
       ':active': {
@@ -183,7 +183,6 @@ export default withStyles(
 
       '@media (min-width: 640px)': {
         fontSize: font.desktop.size,
-        fontWeight: 300,
       },
     },
 
@@ -205,14 +204,14 @@ export default withStyles(
 
       ':hover': {
         background: color.core.borderLight,
-        color: 'inherit',
+        color: color.text,
       },
     },
 
     CalendarDay__hovered_offset: {
       background: color.core.borderBright,
       border: `2px solid ${color.core.white}`,
-      color: 'inherit',
+      color: color.text,
       '@media (min-width: 640px)': {
         border: `4px solid ${color.core.borderLighter}`,
       },
@@ -429,7 +428,13 @@ export default withStyles(
         border: `4px solid ${color.selected.desktop.borderColor}`,
       },
     },
-    CalendarDay__today: {},
+    CalendarDay__today: {
+      color: color.text,
+      ':hover': {
+        color: color.text,
+      },
+    },
     CalendarDay__firstDayOfWeek: {},
     CalendarDay__lastDayOfWeek: {},
-}), { pureComponent: typeof React.PureComponent !== 'undefined' })(CalendarDay);
+  }), { pureComponent: typeof React.PureComponent !== 'undefined' },
+)(CalendarDay);

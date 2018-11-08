@@ -213,7 +213,7 @@ export default {
     spacing: {
       dayPickerHorizontalPadding: 9,
       captionPaddingTop: 22,
-      captionPaddingBottom: 37,
+      captionPaddingBottom: 42,
       inputPadding: 0,
       displayTextPaddingVertical: undefined,
       displayTextPaddingTop: 11,
@@ -231,7 +231,7 @@ export default {
         captionPaddingTop: 22,
       },
       desktop: {
-        captionPaddingTop: 12,
+        captionPaddingTop: 16,
       },
     },
 
@@ -257,7 +257,7 @@ export default {
       mobile: {
         size: 18,
         captionSize: 24,
-        dayLabel: 12,
+        dayLabel: 14,
       },
       desktop: {
         size: 36,
