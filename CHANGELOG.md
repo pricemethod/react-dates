@@ -4,11 +4,15 @@
 - []  ([#](https://github.com/airbnb/react-dates/pull/))
 -->
 
-##18.10
+##18.2.11
+
+- [Update] - Merge in airbnb/react-dates updates
+
+##18.2.10
 
 - [Modify] CSS Styling for mobile hover on days
 
-## 18.9
+## 18.2.9
 
 - [modify] CSS styling for top nav section
 
