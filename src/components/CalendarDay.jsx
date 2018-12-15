@@ -103,7 +103,7 @@ class CalendarDay extends React.PureComponent {
       tabIndex,
       styles,
       phrases,
-      size = 'full',
+      size,
     } = this.props;
 
     if (!day) return <td />;
@@ -117,7 +117,6 @@ class CalendarDay extends React.PureComponent {
       ariaLabel,
     } = getCalendarDaySettings(day, ariaLabelFormat, daySize, modifiers, phrases);
 
-    console.log('CALENDAR DAY: ', size);
     return (
       <td
         {...css(

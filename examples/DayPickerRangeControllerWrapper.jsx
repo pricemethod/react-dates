@@ -136,7 +136,6 @@ class DayPickerRangeControllerWrapper extends React.Component {
 
     const startDateString = startDate && startDate.format('YYYY-MM-DD');
     const endDateString = endDate && endDate.format('YYYY-MM-DD');
-    console.log('WRAPPER: ', size);
     return (
       <div style={{ height: '100%' }}>
         {showInputs && (

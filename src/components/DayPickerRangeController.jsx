@@ -1083,7 +1083,6 @@ export default class DayPickerRangeController extends React.PureComponent {
       size,
     } = this.props;
 
-    console.log('CONTROLLER: ', size);
 
     const { currentMonth, phrases, visibleDays } = this.state;
 

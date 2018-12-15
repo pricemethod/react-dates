@@ -174,14 +174,13 @@ class CalendarMonth extends React.PureComponent {
       renderMonthText,
       styles,
       verticalBorderSpacing,
-      size = 'full',
+      size,
     } = this.props;
 
     const { weeks } = this.state;
     const monthTitle = renderMonthText ? renderMonthText(month) : month.format(monthFormat);
 
     const verticalScrollable = orientation === VERTICAL_SCROLLABLE;
-    console.log('CALENDAR MONTH: ', size);
     return (
       <div
         {...css(styles.CalendarMonth, { padding: `0 ${horizontalMonthPadding}px` })}
