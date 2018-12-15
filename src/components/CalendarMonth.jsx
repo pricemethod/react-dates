@@ -22,12 +22,7 @@ import ModifiersShape from '../shapes/ModifiersShape';
 import ScrollableOrientationShape from '../shapes/ScrollableOrientationShape';
 import DayOfWeekShape from '../shapes/DayOfWeekShape';
 
-
-import {
-  HORIZONTAL_ORIENTATION,
-  VERTICAL_SCROLLABLE,
-  DAY_SIZE,
-} from '../constants';
+import { HORIZONTAL_ORIENTATION, VERTICAL_SCROLLABLE, DAY_SIZE } from '../constants';
 
 const propTypes = forbidExtraProps({
   ...withStylesPropTypes,
@@ -46,10 +41,15 @@ const propTypes = forbidExtraProps({
   renderMonthText: mutuallyExclusiveProps(PropTypes.func, 'renderMonthText', 'renderMonthElement'),
   renderCalendarDay: PropTypes.func,
   renderDayContents: PropTypes.func,
-  renderMonthElement: mutuallyExclusiveProps(PropTypes.func, 'renderMonthText', 'renderMonthElement'),
+  renderMonthElement: mutuallyExclusiveProps(
+    PropTypes.func,
+    'renderMonthText',
+    'renderMonthElement',
+  ),
   firstDayOfWeek: DayOfWeekShape,
   setMonthTitleHeight: PropTypes.func,
   verticalBorderSpacing: nonNegativeInteger,
+  size: PropTypes.string,
 
   focusedDate: momentPropTypes.momentObj, // indicates focusable day
   isFocused: PropTypes.bool, // indicates whether or not to move focus to focusable day
@@ -74,7 +74,7 @@ const defaultProps = {
   onMonthSelect() {},
   onYearSelect() {},
   renderMonthText: null,
-  renderCalendarDay: props => (<CalendarDay {...props} />),
+  renderCalendarDay: props => <CalendarDay {...props} />,
   renderDayContents: null,
   renderMonthElement: null,
   firstDayOfWeek: null,
@@ -174,34 +174,30 @@ class CalendarMonth extends React.PureComponent {
       renderMonthText,
       styles,
       verticalBorderSpacing,
+      size,
     } = this.props;
 
     const { weeks } = this.state;
     const monthTitle = renderMonthText ? renderMonthText(month) : month.format(monthFormat);
 
     const verticalScrollable = orientation === VERTICAL_SCROLLABLE;
-
     return (
       <div
-        {...css(
-          styles.CalendarMonth,
-          { padding: `0 ${horizontalMonthPadding}px` },
-        )}
+        {...css(styles.CalendarMonth, { padding: `0 ${horizontalMonthPadding}px` })}
         data-visible={isVisible}
       >
         <div
           ref={this.setCaptionRef}
           {...css(
             styles.CalendarMonth_caption,
+            size === 'full' ? styles.CalendarMonth_caption_full : styles.CalendarMonth_caption_mini,
             verticalScrollable && styles.CalendarMonth_caption__verticalScrollable,
           )}
         >
           {renderMonthElement ? (
             renderMonthElement({ month, onMonthSelect, onYearSelect })
           ) : (
-            <span>
-              {monthTitle}
-            </span>
+            <span>{monthTitle}</span>
           )}
         </div>
 
@@ -230,6 +226,7 @@ class CalendarMonth extends React.PureComponent {
                   phrases,
                   modifiers: modifiers[toISODateString(day)],
                   ariaLabelFormat: dayAriaLabelFormat,
+                  size,
                 }))}
               </CalendarWeek>
             ))}
@@ -243,43 +240,53 @@ class CalendarMonth extends React.PureComponent {
 CalendarMonth.propTypes = propTypes;
 CalendarMonth.defaultProps = defaultProps;
 
-export default withStyles(({ reactDates: { color, font, spacing } }) => ({
-  CalendarMonth: {
-    background: color.mobile.background,
-    textAlign: 'center',
-    verticalAlign: 'top',
-    userSelect: 'none',
+export default withStyles(
+  ({ reactDates: { color, font, spacing } }) => ({
+    CalendarMonth: {
+      background: color.mobile.background,
+      textAlign: 'center',
+      verticalAlign: 'top',
+      userSelect: 'none',
 
-    '@media (min-width: 640px)': {
-      background: color.desktop.background,
+      '@media (min-width: 640px)': {
+        background: color.desktop.background,
+      },
     },
-  },
 
-  CalendarMonth_table: {
-    borderCollapse: 'collapse',
-    borderSpacing: 0,
-  },
+    CalendarMonth_table: {
+      borderCollapse: 'collapse',
+      borderSpacing: 0,
+    },
 
-  CalendarMonth_verticalSpacing: {
-    borderCollapse: 'separate',
-  },
+    CalendarMonth_verticalSpacing: {
+      borderCollapse: 'separate',
+    },
 
-  CalendarMonth_caption: {
-    color: color.text,
-    fontSize: font.mobile.captionSize,
-    textAlign: 'center',
-    paddingTop: spacing.mobile.captionPaddingTop,
-    paddingBottom: spacing.captionPaddingBottom,
-    captionSide: 'initial',
-    '@media (min-width: 640px)': {
+    CalendarMonth_caption: {
+      color: color.text,
+      fontSize: font.mobile.captionSize,
+      textAlign: 'center',
+      paddingTop: spacing.mobile.captionPaddingTop,
+      paddingBottom: spacing.captionPaddingBottom,
+      captionSide: 'initial',
+      '@media (min-width: 640px)': {
+        fontWeight: 300,
+        paddingTop: spacing.desktop.captionPaddingTop,
+      },
+    },
+
+    CalendarMonth_caption_full: {
       fontSize: font.desktop.captionSize,
-      fontWeight: 300,
-      paddingTop: spacing.desktop.captionPaddingTop,
     },
-  },
 
-  CalendarMonth_caption__verticalScrollable: {
-    paddingTop: 16,
-    paddingBottom: 7,
-  },
-}), { pureComponent: typeof React.PureComponent !== 'undefined' })(CalendarMonth);
+    CalendarMonth_caption_mini: {
+      fontSize: font.mini.captionSize,
+    },
+
+    CalendarMonth_caption__verticalScrollable: {
+      paddingTop: 16,
+      paddingBottom: 7,
+    },
+  }),
+  { pureComponent: typeof React.PureComponent !== 'undefined' },
+)(CalendarMonth);

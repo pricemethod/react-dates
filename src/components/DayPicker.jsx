@@ -70,6 +70,7 @@ const propTypes = forbidExtraProps({
   transitionDuration: nonNegativeInteger,
   verticalBorderSpacing: nonNegativeInteger,
   horizontalMonthPadding: nonNegativeInteger,
+  size: PropTypes.string,
 
   // navigation props
   navPrev: PropTypes.node,
@@ -935,6 +936,7 @@ class DayPicker extends React.PureComponent {
       transitionDuration,
       verticalBorderSpacing,
       horizontalMonthPadding,
+      size,
     } = this.props;
 
     const { reactDates: { spacing: { dayPickerHorizontalPadding } } } = theme;
@@ -1098,6 +1100,7 @@ class DayPicker extends React.PureComponent {
                   transitionDuration={transitionDuration}
                   verticalBorderSpacing={verticalBorderSpacing}
                   horizontalMonthPadding={horizontalMonthPadding}
+                  size={size}
                 />
                 {verticalScrollable && this.renderNavigation()}
               </div>
