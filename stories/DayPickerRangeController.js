@@ -82,6 +82,14 @@ const datesList = [
 
 storiesOf('DayPickerRangeController', module)
   .addDecorator(InfoPanelDecorator(dayPickerRangeControllerInfo))
+  .add('mini', withInfo()(() => (
+    <DayPickerRangeControllerWrapper
+      size="mini"
+      onOutsideClick={action('DayPickerRangeController::onOutsideClick')}
+      onPrevMonthClick={action('DayPickerRangeController::onPrevMonthClick')}
+      onNextMonthClick={action('DayPickerRangeController::onNextMonthClick')}
+    />
+  )))
   .add('default', withInfo()(() => (
     <DayPickerRangeControllerWrapper
       onOutsideClick={action('DayPickerRangeController::onOutsideClick')}

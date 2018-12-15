@@ -39,6 +39,7 @@ const propTypes = forbidExtraProps({
   renderCalendarInfo: PropTypes.func,
   renderMonthElement: PropTypes.func,
   renderMonthText: PropTypes.func,
+  size: PropTypes.string,
 
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
@@ -122,7 +123,7 @@ class DayPickerRangeControllerWrapper extends React.Component {
   }
 
   render() {
-    const { showInputs } = this.props;
+    const { showInputs, size = 'full' } = this.props;
     const { focusedInput, startDate, endDate } = this.state;
 
     const props = omit(this.props, [
@@ -135,7 +136,7 @@ class DayPickerRangeControllerWrapper extends React.Component {
 
     const startDateString = startDate && startDate.format('YYYY-MM-DD');
     const endDateString = endDate && endDate.format('YYYY-MM-DD');
-
+    console.log('WRAPPER: ', size);
     return (
       <div style={{ height: '100%' }}>
         {showInputs && (
@@ -165,7 +166,10 @@ class DayPickerRangeControllerWrapper extends React.Component {
             startDate={startDate}
             endDate={endDate}
             numberOfMonths={1}
-            daySize={75}
+            daySize={size === 'full' ? 75 : 40}
+            noBorder
+            size={size}
+            hideKeyboardShortcutsPanel
           />
         </MediaQuery>
       </div>

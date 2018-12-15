@@ -25,6 +25,7 @@ const propTypes = forbidExtraProps({
   onDayMouseLeave: PropTypes.func,
   renderDayContents: PropTypes.func,
   ariaLabelFormat: PropTypes.string,
+  size: PropTypes.string,
 
   // internationalization
   phrases: PropTypes.shape(getPhrasePropTypes(CalendarDayPhrases)),
@@ -102,6 +103,7 @@ class CalendarDay extends React.PureComponent {
       tabIndex,
       styles,
       phrases,
+      size = 'full',
     } = this.props;
 
     if (!day) return <td />;
@@ -115,6 +117,7 @@ class CalendarDay extends React.PureComponent {
       ariaLabel,
     } = getCalendarDaySettings(day, ariaLabelFormat, daySize, modifiers, phrases);
 
+    console.log('CALENDAR DAY: ', size);
     return (
       <td
         {...css(
@@ -137,6 +140,7 @@ class CalendarDay extends React.PureComponent {
           selected && styles.CalendarDay__selected,
           isOutsideRange && styles.CalendarDay__blocked_out_of_range,
           daySizeStyles,
+          size == 'full' ? styles.CalendarDay__full_size : styles.CalendarDay__mini_size,
         )}
         role="button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
         ref={this.setButtonRef}
@@ -181,9 +185,9 @@ export default withStyles(
         outline: 0,
       },
 
-      '@media (min-width: 640px)': {
-        fontSize: font.desktop.size,
-      },
+      // '@media (min-width: 640px)': {
+      //   fontSize: font.desktop.size,
+      // },
     },
 
     CalendarDay__defaultCursor: {
@@ -196,7 +200,7 @@ export default withStyles(
       background: color.mobile.dayBackground,
 
       '@media (min-width: 640px)': {
-        fontSize: font.desktop.size,
+        // fontSize: font.desktop.size,
         fontWeight: 300,
         background: color.desktop.dayBackground,
         border: `4px solid ${color.core.borderLighter}`,
@@ -206,6 +210,14 @@ export default withStyles(
         background: color.core.borderLight,
         color: color.text,
       },
+    },
+
+    CalendarDay__mini_size: {
+      fontSize: font.mini.size,
+    },
+
+    CalendarDay__full_size: {
+      fontSize: font.desktop.size,
     },
 
     CalendarDay__hovered_offset: {
@@ -436,5 +448,6 @@ export default withStyles(
     },
     CalendarDay__firstDayOfWeek: {},
     CalendarDay__lastDayOfWeek: {},
-  }), { pureComponent: typeof React.PureComponent !== 'undefined' },
+  }),
+  { pureComponent: typeof React.PureComponent !== 'undefined' },
 )(CalendarDay);

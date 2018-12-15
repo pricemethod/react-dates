@@ -107,21 +107,17 @@ class DayPickerSingleDateControllerWrapper extends React.Component {
     const { showInput } = this.props;
     const { focused, date } = this.state;
 
-    const props = omit(this.props, [
-      'autoFocus',
-      'initialDate',
-      'showInput',
-    ]);
+    const props = omit(this.props, ['autoFocus', 'initialDate', 'showInput']);
 
     const dateString = date && date.format('YYYY-MM-DD');
 
     return (
       <div>
-        {showInput &&
+        {showInput && (
           <div style={{ marginBottom: 16 }}>
             <input type="text" name="start date" value={dateString || ''} readOnly />
           </div>
-        }
+        )}
 
         <DayPickerSingleDateController
           {...props}

@@ -71,6 +71,7 @@ const propTypes = forbidExtraProps({
   noBorder: PropTypes.bool,
   verticalBorderSpacing: nonNegativeInteger,
   horizontalMonthPadding: nonNegativeInteger,
+  size: PropTypes.string,
 
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
@@ -1079,7 +1080,10 @@ export default class DayPickerRangeController extends React.PureComponent {
       transitionDuration,
       verticalBorderSpacing,
       horizontalMonthPadding,
+      size,
     } = this.props;
+
+    console.log('CONTROLLER: ', size);
 
     const { currentMonth, phrases, visibleDays } = this.state;
 
@@ -1129,6 +1133,7 @@ export default class DayPickerRangeController extends React.PureComponent {
         noBorder={noBorder}
         transitionDuration={transitionDuration}
         horizontalMonthPadding={horizontalMonthPadding}
+        size={size}
       />
     );
   }
