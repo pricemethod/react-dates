@@ -4,6 +4,10 @@
 - []  ([#](https://github.com/airbnb/react-dates/pull/))
 -->
 
+##18.2.12
+
+- [Modify] - adding mini sized range selector
+
 ##18.2.11
 
 - [Update] - Merge in airbnb/react-dates updates

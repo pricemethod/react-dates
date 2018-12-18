@@ -139,7 +139,7 @@ class CalendarDay extends React.PureComponent {
           selected && styles.CalendarDay__selected,
           isOutsideRange && styles.CalendarDay__blocked_out_of_range,
           daySizeStyles,
-          size == 'full' ? styles.CalendarDay__full_size : styles.CalendarDay__mini_size,
+          size === 'full' ? styles.CalendarDay__full_size : styles.CalendarDay__mini_size,
         )}
         role="button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
         ref={this.setButtonRef}
