@@ -4,6 +4,10 @@
 - []  ([#](https://github.com/airbnb/react-dates/pull/))
 -->
 
+##18.2.13
+
+- [Modify] - Changing mini caption size
+
 ##18.2.12
 
 - [Modify] - adding mini sized range selector

@@ -266,7 +266,7 @@ export default {
       },
       mini: {
         size: 22,
-        captionSize: 28,
+        captionSize: 24,
         dayLabel: 15,
       },
     },
