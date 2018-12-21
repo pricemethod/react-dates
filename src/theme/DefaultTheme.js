@@ -3,12 +3,12 @@ const core = {
   gray: '#4A4A4A',
   grayLight: '#9B9B9B',
   grayLighter: '#CBCBCB',
-  grayLightest: '#F4F3F4',
+  grayLightest: '#EBEBEB',
 
   borderMedium: '#CBCBCB',
   border: '#dbdbdb',
   borderLight: '#EAEAEA',
-  borderLighter: '#F4F3F4',
+  borderLighter: '#EBEBEB',
   borderBright: '#f4f5f5',
 
   primary: '#000',
