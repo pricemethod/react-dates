@@ -1138,21 +1138,12 @@ export default withStyles(({
     noScrollBarOnVerticalScrollable,
     spacing,
     zIndex,
-  },
+    },
 }) => ({
   DayPicker: {
     background: color.background,
     position: 'relative',
     textAlign: 'left',
-    '@media (min-width: 640px)': {
-      background: color.desktop.background,
-    },
-  },
-
-  DayPicker__horizontal: {
-    '@media (min-width: 640px)': {
-      background: color.desktop.background,
-    },
   },
 
   DayPicker__verticalScrollable: {

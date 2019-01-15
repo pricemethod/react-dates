@@ -243,14 +243,10 @@ CalendarMonth.defaultProps = defaultProps;
 export default withStyles(
   ({ reactDates: { color, font, spacing } }) => ({
     CalendarMonth: {
-      background: color.mobile.background,
+      background: color.background,
       textAlign: 'center',
       verticalAlign: 'top',
       userSelect: 'none',
-
-      '@media (min-width: 640px)': {
-        background: color.desktop.background,
-      },
     },
 
     CalendarMonth_table: {
