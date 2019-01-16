@@ -1,6 +1,6 @@
 {
     "name": "@lyric-travel/react-dates",
-    "version": "18.2.14",
+    "version": "18.2.15",
     "description": "A responsive and accessible date range picker component built with React",
     "main": "index.js",
     "scripts": {

@@ -378,12 +378,9 @@ export default withStyles(({
   },
 }) => ({
   CalendarMonthGrid: {
-    background: color.mobile.background,
+    background: color.background,
     textAlign: 'left',
     zIndex,
-    '@media (min-width: 640px)': {
-      background: color.desktop.background,
-    },
   },
 
   CalendarMonthGrid__animating: {
