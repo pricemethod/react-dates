@@ -4,6 +4,10 @@
 - []  ([#](https://github.com/airbnb/react-dates/pull/))
 -->
 
+##18.2.15
+
+-   [Modify] - Update styling to match new design for homepage of Lyric
+
 ##18.2.14
 
 -   [Modify] - Changing default grey to Lyric Grey
