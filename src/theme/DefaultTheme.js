@@ -148,14 +148,14 @@ export default {
         borderColor: core.white,
         color_active: core.grayLighter,
         color_hover: core.grayLighter,
-        color: core.grayLighter,
+        color: core.primary,
       },
     },
 
     spacing: {
       dayPickerHorizontalPadding: 4,
       captionPaddingTop: 22,
-      captionPaddingBottom: 42,
+      captionPaddingBottom: 38,
       inputPadding: 0,
       displayTextPaddingVertical: undefined,
       displayTextPaddingTop: 11,
@@ -202,13 +202,13 @@ export default {
         dayLabel: 14,
       },
       desktop: {
-        size: 26,
-        captionSize: 26,
+        size: 16,
+        captionSize: 16,
         dayLabel: 16,
       },
       mini: {
         size: 16,
-        captionSize: 26,
+        captionSize: 16,
         dayLabel: 12,
       },
     },

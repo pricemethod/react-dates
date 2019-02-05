@@ -266,7 +266,7 @@ export default withStyles(
       paddingBottom: spacing.captionPaddingBottom,
       captionSide: 'initial',
       '@media (min-width: 640px)': {
-        fontWeight: 300,
+        fontWeight: 500,
         paddingTop: spacing.desktop.captionPaddingTop,
       },
     },
