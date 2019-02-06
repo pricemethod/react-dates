@@ -47,6 +47,9 @@ yarn.lock
 package-lock.json
 
 css/styles.css
+<<<<<<< HEAD
 
 # VS Code plugin that saves versions pre-commit & push
 .history/
+=======
+>>>>>>> f596ba2bbc4e196327bf8b8418f80b401c34c935

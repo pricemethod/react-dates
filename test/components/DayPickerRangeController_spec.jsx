@@ -1563,6 +1563,35 @@ describe('DayPickerRangeController', () => {
         expect(args.endDate.format()).to.equal(clickDate.clone().add(4, 'days').format());
       });
 
+      it('does not call props.onDatesChange with startDate === startDateOffset(date) and endDate === endDateOffset(date)', () => {
+        const clickDate = moment(today).clone().add(2, 'days');
+        const onDatesChangeStub = sinon.spy();
+        const wrapper = shallow((
+          <DayPickerRangeController
+            onDatesChange={onDatesChangeStub}
+            startDateOffset={day => day.subtract(2, 'days')}
+            endDateOffset={day => day.add(4, 'days')}
+            isOutsideRange={day => day.isAfter(moment(today))}
+          />
+        ));
+        wrapper.instance().onDayClick(clickDate);
+        expect(onDatesChangeStub).to.have.property('callCount', 0);
+      });
+
+      it('does not call props.onDatesChange when dateOffset isOutsideRange', () => {
+        const clickDate = moment(today);
+        const onDatesChangeStub = sinon.stub();
+        const wrapper = shallow((
+          <DayPickerRangeController
+            onDatesChange={onDatesChangeStub}
+            endDateOffset={day => day.add(5, 'days')}
+            isOutsideRange={day => day.isAfter(moment(today).clone().add(1, 'days'))}
+          />
+        ));
+        wrapper.instance().onDayClick(clickDate);
+        expect(onDatesChangeStub).to.have.property('callCount', 0);
+      });
+
       it('calls props.onDatesChange with startDate === startDateOffset(date) and endDate === selectedDate when endDateOffset not provided', () => {
         const clickDate = moment(today).clone().add(2, 'days');
         const onDatesChangeStub = sinon.stub();
@@ -1591,6 +1620,57 @@ describe('DayPickerRangeController', () => {
         const args = onDatesChangeStub.getCall(0).args[0];
         expect(args.startDate.format()).to.equal(clickDate.format());
         expect(args.endDate.format()).to.equal(clickDate.clone().add(12, 'days').format());
+      });
+    });
+
+    describe('logic in props.onDatesChange affects props.onFocusChange', () => {
+      let preventFocusChange;
+      let focusedInput;
+      let onDatesChange;
+      let onFocusChange;
+      beforeEach(() => {
+        preventFocusChange = false;
+        focusedInput = START_DATE;
+        onDatesChange = ({ startDate }) => {
+          if (isSameDay(startDate, today)) preventFocusChange = true;
+        };
+        onFocusChange = (input) => {
+          if (!preventFocusChange) {
+            focusedInput = input;
+          } else {
+            preventFocusChange = false;
+          }
+        };
+      });
+
+      it('calls onDayClick with a day that prevents a focus change', () => {
+        const clickDate = moment(today);
+        const wrapper = shallow((
+          <DayPickerRangeController
+            onDatesChange={onDatesChange}
+            onFocusChange={onFocusChange}
+            focusedInput={START_DATE}
+          />
+        ));
+        // The first day click sets preventFocusChange to true, but it doesn't take effect until the
+        // second day click because onFocusChange is called before onDatesChange
+        wrapper.instance().onDayClick(clickDate);
+        expect(focusedInput).to.equal(END_DATE);
+        wrapper.instance().onDayClick(clickDate.clone().add(1, 'days'));
+        expect(focusedInput).to.equal(END_DATE);
+      });
+
+      it('calls onDayClick with a day that does not prevent a focus change', () => {
+        const clickDate = moment(today).clone().add(2, 'days');
+        const wrapper = shallow((
+          <DayPickerRangeController
+            onDatesChange={onDatesChange}
+            onFocusChange={onFocusChange}
+            focusedInput={START_DATE}
+          />
+        ));
+        wrapper.instance().onDayClick(clickDate);
+        expect(focusedInput).to.equal(END_DATE);
       });
     });
   });
@@ -2048,6 +2128,72 @@ describe('DayPickerRangeController', () => {
       expect(onPrevMonthClickStub.callCount).to.equal(1);
       expect(onPrevMonthClickStub.firstCall.args[0].year()).to.equal(newMonth.year());
       expect(onPrevMonthClickStub.firstCall.args[0].month()).to.equal(newMonth.month());
+    });
+
+    it('calls this.shouldDisableMonthNavigation twice', () => {
+      const shouldDisableMonthNavigationSpy = sinon.spy(DayPickerRangeController.prototype, 'shouldDisableMonthNavigation');
+      const wrapper = shallow((
+        <DayPickerRangeController
+          onDatesChange={sinon.stub()}
+          onFocusChange={sinon.stub()}
+        />
+      ));
+      shouldDisableMonthNavigationSpy.resetHistory();
+      wrapper.instance().onPrevMonthClick();
+      expect(shouldDisableMonthNavigationSpy.callCount).to.equal(2);
+    });
+
+    it('sets disablePrev and disablePrev as false on onPrevMonthClick call withouth maxDate and minDate set', () => {
+      const numberOfMonths = 2;
+      const wrapper = shallow((
+        <DayPickerRangeController
+          onDatesChange={sinon.stub()}
+          onFocusChange={sinon.stub()}
+          numberOfMonths={numberOfMonths}
+        />
+      ));
+      wrapper.setState({
+        currentMonth: today,
+      });
+      wrapper.instance().onPrevMonthClick();
+      expect(wrapper.state().disablePrev).to.equal(false);
+      expect(wrapper.state().disableNext).to.equal(false);
+    });
+
+    it('sets disableNext as true when maxDate is in visible month', () => {
+      const numberOfMonths = 2;
+      const wrapper = shallow((
+        <DayPickerRangeController
+          onDatesChange={sinon.stub()}
+          onFocusChange={sinon.stub()}
+          numberOfMonths={numberOfMonths}
+          maxDate={today}
+        />
+      ));
+      wrapper.setState({
+        currentMonth: today,
+      });
+      wrapper.instance().onPrevMonthClick();
+      expect(wrapper.state().disableNext).to.equal(true);
+      expect(wrapper.state().disablePrev).to.equal(false);
+    });
+
+    it('sets disablePrev as true when minDate is in visible month', () => {
+      const numberOfMonths = 2;
+      const wrapper = shallow((
+        <DayPickerRangeController
+          onDatesChange={sinon.stub()}
+          onFocusChange={sinon.stub()}
+          numberOfMonths={numberOfMonths}
+          minDate={today.clone().subtract(1, 'month')}
+        />
+      ));
+      wrapper.setState({
+        currentMonth: today,
+      });
+      wrapper.instance().onPrevMonthClick();
+      expect(wrapper.state().disableNext).to.equal(false);
+      expect(wrapper.state().disablePrev).to.equal(true);
     });
   });
 
