@@ -46,6 +46,8 @@ const propTypes = forbidExtraProps({
   onDatesChange: PropTypes.func,
   startDateOffset: PropTypes.func,
   endDateOffset: PropTypes.func,
+  minDate: momentPropTypes.momentObj,
+  maxDate: momentPropTypes.momentObj,
 
   focusedInput: FocusedInputShape,
   onFocusChange: PropTypes.func,
@@ -107,6 +109,8 @@ const propTypes = forbidExtraProps({
 const defaultProps = {
   startDate: undefined, // TODO: use null
   endDate: undefined, // TODO: use null
+  minDate: null,
+  maxDate: null,
   onDatesChange() {},
   startDateOffset: undefined,
   endDateOffset: undefined,
@@ -218,6 +222,8 @@ export default class DayPickerRangeController extends React.PureComponent {
         chooseAvailableDate,
       },
       visibleDays,
+      disablePrev: this.shouldDisableMonthNavigation(props.minDate, currentMonth),
+      disableNext: this.shouldDisableMonthNavigation(props.maxDate, currentMonth),
     };
 
     this.onDayClick = this.onDayClick.bind(this);
@@ -486,6 +492,10 @@ export default class DayPickerRangeController extends React.PureComponent {
       startDate = getSelectedDateOffset(startDateOffset, day);
       endDate = getSelectedDateOffset(endDateOffset, day);
 
+      if (this.isBlocked(startDate) || this.isBlocked(endDate)) {
+        return;
+      }
+
       if (!keepOpenOnDateSelect) {
         onFocusChange(null);
         onClose({ startDate, endDate });
@@ -542,8 +552,14 @@ export default class DayPickerRangeController extends React.PureComponent {
       startDateOffset,
       endDateOffset,
     } = this.props;
-    const { hoverDate, visibleDays } = this.state;
-    let dateOffset = null;
+
+    const {
+      hoverDate,
+      visibleDays,
+      dateOffset,
+    } = this.state;
+
+    let nextDateOffset = null;
 
     if (focusedInput) {
       const hasOffset = startDateOffset || endDateOffset;
@@ -553,14 +569,14 @@ export default class DayPickerRangeController extends React.PureComponent {
         const start = getSelectedDateOffset(startDateOffset, day);
         const end = getSelectedDateOffset(endDateOffset, day, rangeDay => rangeDay.add(1, 'day'));
 
-        dateOffset = {
+        nextDateOffset = {
           start,
           end,
         };
 
         // eslint-disable-next-line react/destructuring-assignment
-        if (this.state.dateOffset && this.state.dateOffset.start && this.state.dateOffset.end) {
-          modifiers = this.deleteModifierFromRange(modifiers, this.state.dateOffset.start, this.state.dateOffset.end, 'hovered-offset');
+        if (dateOffset && dateOffset.start && dateOffset.end) {
+          modifiers = this.deleteModifierFromRange(modifiers, dateOffset.start, dateOffset.end, 'hovered-offset');
         }
         modifiers = this.addModifierToRange(modifiers, start, end, 'hovered-offset');
       }
@@ -611,7 +627,7 @@ export default class DayPickerRangeController extends React.PureComponent {
 
       this.setState({
         hoverDate: day,
-        dateOffset,
+        dateOffset: nextDateOffset,
         visibleDays: {
           ...visibleDays,
           ...modifiers,
@@ -657,7 +673,13 @@ export default class DayPickerRangeController extends React.PureComponent {
   }
 
   onPrevMonthClick() {
-    const { onPrevMonthClick, numberOfMonths, enableOutsideDays } = this.props;
+    const {
+      enableOutsideDays,
+      maxDate,
+      minDate,
+      numberOfMonths,
+      onPrevMonthClick,
+    } = this.props;
     const { currentMonth, visibleDays } = this.state;
 
     const newVisibleDays = {};
@@ -671,6 +693,8 @@ export default class DayPickerRangeController extends React.PureComponent {
     const newCurrentMonth = currentMonth.clone().subtract(1, 'month');
     this.setState({
       currentMonth: newCurrentMonth,
+      disablePrev: this.shouldDisableMonthNavigation(minDate, newCurrentMonth),
+      disableNext: this.shouldDisableMonthNavigation(maxDate, newCurrentMonth),
       visibleDays: {
         ...newVisibleDays,
         ...this.getModifiers(prevMonthVisibleDays),
@@ -681,7 +705,13 @@ export default class DayPickerRangeController extends React.PureComponent {
   }
 
   onNextMonthClick() {
-    const { onNextMonthClick, numberOfMonths, enableOutsideDays } = this.props;
+    const {
+      enableOutsideDays,
+      maxDate,
+      minDate,
+      numberOfMonths,
+      onNextMonthClick,
+    } = this.props;
     const { currentMonth, visibleDays } = this.state;
 
     const newVisibleDays = {};
@@ -691,10 +721,11 @@ export default class DayPickerRangeController extends React.PureComponent {
 
     const nextMonth = currentMonth.clone().add(numberOfMonths + 1, 'month');
     const nextMonthVisibleDays = getVisibleDays(nextMonth, 1, enableOutsideDays, true);
-
     const newCurrentMonth = currentMonth.clone().add(1, 'month');
     this.setState({
       currentMonth: newCurrentMonth,
+      disablePrev: this.shouldDisableMonthNavigation(minDate, newCurrentMonth),
+      disableNext: this.shouldDisableMonthNavigation(maxDate, newCurrentMonth),
       visibleDays: {
         ...newVisibleDays,
         ...this.getModifiers(nextMonthVisibleDays),
@@ -825,6 +856,17 @@ export default class DayPickerRangeController extends React.PureComponent {
       withoutTransitionMonths,
     ));
     return { currentMonth, visibleDays };
+  }
+
+  shouldDisableMonthNavigation(date, visibleMonth) {
+    if (!date) return false;
+
+    const {
+      numberOfMonths,
+      enableOutsideDays,
+    } = this.props;
+
+    return isDayVisible(date, visibleMonth, numberOfMonths, enableOutsideDays);
   }
 
   addModifier(updatedDays, day, modifier) {
@@ -1083,8 +1125,13 @@ export default class DayPickerRangeController extends React.PureComponent {
       size,
     } = this.props;
 
-
-    const { currentMonth, phrases, visibleDays } = this.state;
+    const {
+      currentMonth,
+      phrases,
+      visibleDays,
+      disablePrev,
+      disableNext,
+    } = this.state;
 
     return (
       <DayPicker
@@ -1109,6 +1156,8 @@ export default class DayPickerRangeController extends React.PureComponent {
         initialVisibleMonth={() => currentMonth}
         daySize={daySize}
         onOutsideClick={onOutsideClick}
+        disablePrev={disablePrev}
+        disableNext={disableNext}
         navPrev={navPrev}
         navNext={navNext}
         noNavButtons={noNavButtons}
