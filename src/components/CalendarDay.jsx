@@ -178,7 +178,7 @@ export default withStyles(
       boxSizing: 'border-box',
       cursor: 'pointer',
       fontSize: font.size,
-      fontWeight: 300,
+      fontWeight: 400,
       textAlign: 'center',
 
       ':active': {
@@ -193,7 +193,7 @@ export default withStyles(
     CalendarDay__default: {
       border: `${border.width}px solid ${color.core.white}`,
       color: color.text,
-      fontWeight: 300,
+      fontWeight: 400,
       background: color.dayBackground,
 
       ':hover': {

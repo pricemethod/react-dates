@@ -19,6 +19,9 @@
 - [fix][a11y] Remove space/enter onKeyDown handling for open/close keyboard shortcuts panel ([#1464](https://github.com/airbnb/react-dates/pull/1464))
 - [fix][a11y] Fix lack of visible focus in Firefox and IE on "?" keyboard shortcuts button ([#1463](https://github.com/airbnb/react-dates/pull/1463))
 
+##18.2.16
+- [Modify] - Styling update, match Lyric design
+
 ##18.2.15
 -   [Modify] - Update styling to match new design for homepage of Lyric
 

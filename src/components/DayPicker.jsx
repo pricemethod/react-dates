@@ -1203,7 +1203,7 @@ export default withStyles(({
   DayPicker_weekHeader: {
     color: color.placeholderText,
     position: 'absolute',
-    top: 67,
+    top: 46,
     zIndex: zIndex + 2,
     textAlign: noflip('left'),
   },
