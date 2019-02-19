@@ -197,8 +197,9 @@ export default withStyles(
       background: color.dayBackground,
 
       ':hover': {
-        background: color.core.grayLight,
+        background: color.hoverBackground,
         color: color.core.white,
+        fontWeight: font.weight.hover,
       },
     },
 
@@ -261,6 +262,7 @@ export default withStyles(
       background: color.selectedSpan.backgroundColor,
       border: `${border.width}px solid ${color.selectedSpan.borderColor}`,
       color: color.selectedSpan.color,
+      fontWeight: font.weight.selected,
 
       ':hover': {
         background: color.selectedSpan.backgroundColor_hover,
@@ -301,6 +303,7 @@ export default withStyles(
       color: color.hoveredSpan.color,
       border: `${border.width}px solid ${color.hoveredSpan.borderColor}`,
       background: color.hoveredSpan.backgroundColor,
+      fontWeight: 600,
       ':hover': {
         border: `${border.width}px solid ${color.hoveredSpan.borderColor}`,
       },
@@ -333,12 +336,14 @@ export default withStyles(
         border: `${border.width}px solid ${color.blocked_out_of_range.borderColor}`,
         background: color.blocked_out_of_range.backgroundColor_hover,
         color: color.blocked_out_of_range.color,
+        fontWeight: font.weight.default,
       },
     },
 
     CalendarDay__selected_start: {
       background: color.selected.backgroundColor,
       border: `${border.width}px solid ${color.selected.borderColor}`,
+      fontWeight: font.weight.selected,
       ':hover': {
         background: color.selected.backgroundColor,
         color: color.selected.color_hover,
@@ -347,6 +352,7 @@ export default withStyles(
     CalendarDay__selected_end: {
       background: color.selected.backgroundColor,
       border: `${border.width}px solid ${color.selected.borderColor}`,
+      fontWeight: font.weight.selected,
       ':hover': {
         background: color.selected.backgroundColor,
         color: color.selected.color_hover,
