@@ -303,7 +303,7 @@ export default withStyles(
       color: color.hoveredSpan.color,
       border: `${border.width}px solid ${color.hoveredSpan.borderColor}`,
       background: color.hoveredSpan.backgroundColor,
-      fontWeight: 600,
+      fontWeight: font.weight.hover,
       ':hover': {
         border: `${border.width}px solid ${color.hoveredSpan.borderColor}`,
       },
