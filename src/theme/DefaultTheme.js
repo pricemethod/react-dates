@@ -4,6 +4,7 @@ const core = {
   grayLight: '#9B9B9B',
   grayLighter: '#CBCBCB',
   grayLightest: '#EBEBEB',
+  grayHover: '#616161',
 
   borderMedium: '#CBCBCB',
   border: '#FFF',
@@ -56,12 +57,13 @@ export default {
       backgroundFocused: core.white,
       border: core.white,
       core,
-      dayBackground: core.grayLightest,
+      dayBackground: core.white,
       disabled: core.grayLightest,
       placeholderText: '#757575',
       text: core.primary,
       textDisabled: core.border,
       textFocused: '#000',
+      hoverBackground: core.grayHover,
 
       outside: {
         backgroundColor_active: core.white,
@@ -94,7 +96,7 @@ export default {
       hoveredSpan: {
         backgroundColor_active: core.primaryShade_3,
         backgroundColor_hover: core.primary,
-        backgroundColor: core.primaryShade_3,
+        backgroundColor: core.grayHover,
         borderColor_active: core.border,
         borderColor_hover: core.border,
         borderColor: core.border,
@@ -104,9 +106,9 @@ export default {
       },
 
       selectedSpan: {
-        backgroundColor_active: core.primaryShade_2,
-        backgroundColor_hover: core.primaryShade_2,
-        backgroundColor: core.primaryShade_2,
+        backgroundColor_active: core.primary,
+        backgroundColor_hover: core.primary,
+        backgroundColor: core.primary,
         borderColor_active: core.border,
         borderColor_hover: core.border,
         borderColor: core.border,
@@ -148,7 +150,7 @@ export default {
         borderColor: core.white,
         color_active: core.grayLighter,
         color_hover: core.grayLighter,
-        color: core.primary,
+        color: core.primaryShade_3,
       },
     },
 
@@ -210,6 +212,11 @@ export default {
         size: 16,
         captionSize: 16,
         dayLabel: 12,
+      },
+      weight: {
+        selected: 600,
+        hover: 600,
+        default: 400,
       },
     },
   },
