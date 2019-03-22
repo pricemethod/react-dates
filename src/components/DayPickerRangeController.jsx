@@ -843,6 +843,7 @@ export default class DayPickerRangeController extends React.PureComponent {
       enableOutsideDays,
       orientation,
       startDate,
+      minDate,
     } = nextProps;
     const initialVisibleMonthThunk = initialVisibleMonth || (
       startDate ? () => startDate : () => this.today
@@ -850,7 +851,7 @@ export default class DayPickerRangeController extends React.PureComponent {
     const currentMonth = initialVisibleMonthThunk();
     const withoutTransitionMonths = orientation === VERTICAL_SCROLLABLE;
     const visibleDays = this.getModifiers(getVisibleDays(
-      currentMonth,
+      orientation === VERTICAL_SCROLLABLE && minDate ? minDate : currentMonth,
       numberOfMonths,
       enableOutsideDays,
       withoutTransitionMonths,
@@ -1123,6 +1124,8 @@ export default class DayPickerRangeController extends React.PureComponent {
       verticalBorderSpacing,
       horizontalMonthPadding,
       size,
+      minDate,
+      maxDate,
     } = this.props;
 
     const {
@@ -1182,6 +1185,8 @@ export default class DayPickerRangeController extends React.PureComponent {
         transitionDuration={transitionDuration}
         horizontalMonthPadding={horizontalMonthPadding}
         size={size}
+        minDate={minDate}
+        maxDate={maxDate}
       />
     );
   }

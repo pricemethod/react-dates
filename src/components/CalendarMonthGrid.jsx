@@ -61,6 +61,8 @@ const propTypes = forbidExtraProps({
   transitionDuration: nonNegativeInteger,
   verticalBorderSpacing: nonNegativeInteger,
   size: PropTypes.string,
+  minDate: momentPropTypes.momentObj,
+  maxDate: momentPropTypes.momentObj,
 
   // i18n
   monthFormat: PropTypes.string,
@@ -96,6 +98,9 @@ const defaultProps = {
   isRTL: false,
   transitionDuration: 200,
   verticalBorderSpacing: undefined,
+  size: undefined,
+  minDate: undefined,
+  maxDate: undefined,
 
   // i18n
   monthFormat: 'MMMM YYYY', // english locale
@@ -121,7 +126,7 @@ class CalendarMonthGrid extends React.PureComponent {
     super(props);
     const withoutTransitionMonths = props.orientation === VERTICAL_SCROLLABLE;
     this.state = {
-      months: getMonths(props.initialMonth, props.numberOfMonths, withoutTransitionMonths),
+      months: getMonths(props.orientation === VERTICAL_SCROLLABLE && props.minDate ? props.minDate : props.initialMonth, props.numberOfMonths, withoutTransitionMonths),
     };
 
     this.isTransitionEndSupported = isTransitionEndSupported();

@@ -3,6 +3,9 @@
 <!--
 - []  ([#](https://github.com/airbnb/react-dates/pull/))
 -->
+## 18.4.3
+- [Modify] Display correct range of month wile using DatePickerRangeController with orientation landscape.
+-
 ## 18.4.2
 - [Modify] Modify styles
 

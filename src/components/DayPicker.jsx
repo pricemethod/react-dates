@@ -72,6 +72,8 @@ const propTypes = forbidExtraProps({
   verticalBorderSpacing: nonNegativeInteger,
   horizontalMonthPadding: nonNegativeInteger,
   size: PropTypes.string,
+  minDate: PropTypes.any,
+  maxDate: PropTypes.any,
 
   // navigation props
   disablePrev: PropTypes.bool,
@@ -132,6 +134,9 @@ export const defaultProps = {
   transitionDuration: undefined,
   verticalBorderSpacing: undefined,
   horizontalMonthPadding: 13,
+  size: undefined,
+  minDate: undefined,
+  maxDate: undefined,
 
   // navigation props
   disablePrev: false,
@@ -946,6 +951,8 @@ class DayPicker extends React.PureComponent {
       verticalBorderSpacing,
       horizontalMonthPadding,
       size,
+      minDate,
+      maxDate,
     } = this.props;
 
     const { reactDates: { spacing: { dayPickerHorizontalPadding } } } = theme;
@@ -1110,6 +1117,8 @@ class DayPicker extends React.PureComponent {
                   verticalBorderSpacing={verticalBorderSpacing}
                   horizontalMonthPadding={horizontalMonthPadding}
                   size={size}
+                  minDate={minDate}
+                  maxDate={maxDate}
                 />
                 {verticalScrollable && this.renderNavigation()}
               </div>
@@ -1146,7 +1155,7 @@ export default withStyles(({
     noScrollBarOnVerticalScrollable,
     spacing,
     zIndex,
-    },
+  },
 }) => ({
   DayPicker: {
     background: color.background,
