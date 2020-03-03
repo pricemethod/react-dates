@@ -138,7 +138,7 @@ export default {
         borderColor: core.grayLighter,
         color_active: core.grayLight,
         color_hover: core.grayLight,
-        color: core.grayLight,
+        color: core.primaryShade_3,
       },
 
       blocked_out_of_range: {

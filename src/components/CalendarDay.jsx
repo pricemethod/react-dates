@@ -167,10 +167,13 @@ class CalendarDay extends React.PureComponent {
           <div
             className="strike"
             style={{
-              width: '50%', margin: 'auto', background: 'linear-gradient(to top left, #fff calc(50% - 1px), #aaa, #fff calc(50% + 1px))',
+              width: '40%', height: '40%', margin: 'auto', position: 'relative', background: 'linear-gradient(to top left, #fff calc(50% - 1.25px), #CBCBCB, #fff calc(50% + 1.25px))',
             }}
           >
-            <div>
+            <div style={{
+              position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+            }}
+            >
               {renderDayContents ? renderDayContents(day, modifiers) : day.format('D')}
             </div>
           </div>
@@ -179,6 +182,7 @@ class CalendarDay extends React.PureComponent {
     );
   }
 }
+
 
 CalendarDay.propTypes = propTypes;
 CalendarDay.defaultProps = defaultProps;
