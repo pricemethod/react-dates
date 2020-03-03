@@ -162,7 +162,19 @@ class CalendarDay extends React.PureComponent {
         }}
         tabIndex={tabIndex}
       >
-        {renderDayContents ? renderDayContents(day, modifiers) : day.format('D')}
+
+        {modifiers.has('blocked-calendar') ? (
+          <div
+            className="strike"
+            style={{
+              width: '50%', margin: 'auto', background: 'linear-gradient(to top left, #fff calc(50% - 1px), #aaa, #fff calc(50% + 1px))',
+            }}
+          >
+            <div>
+              {renderDayContents ? renderDayContents(day, modifiers) : day.format('D')}
+            </div>
+          </div>
+        ) : <div>{renderDayContents ? renderDayContents(day, modifiers) : day.format('D')}</div>}
       </td>
     );
   }
@@ -316,7 +328,7 @@ export default withStyles(
     CalendarDay__blocked_calendar: {
       background: color.blocked_calendar.backgroundColor,
       color: color.blocked_calendar.color,
-      border: `${border.width}px solid ${color.blocked_calendar.borderColor}`,
+      // border: `${border.width}px solid ${color.blocked_calendar.borderColor}`,
 
       ':hover': {
         border: `${border.width}px solid ${color.blocked_calendar.borderColor}`,
