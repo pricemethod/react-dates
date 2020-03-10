@@ -228,7 +228,7 @@ storiesOf('DayPickerRangeController', module)
         orientation={VERTICAL_SCROLLABLE}
         numberOfMonths={3}
         verticalHeight={300}
-        navNext={
+        navNext={(
           <div style={{ position: 'relative' }}>
             <span
               style={{
@@ -244,7 +244,7 @@ storiesOf('DayPickerRangeController', module)
               Show More Months
             </span>
           </div>
-        }
+        )}
       />
     </div>
   )))
@@ -318,9 +318,8 @@ storiesOf('DayPickerRangeController', module)
       onOutsideClick={action('DayPickerRangeController::onOutsideClick')}
       onPrevMonthClick={action('DayPickerRangeController::onPrevMonthClick')}
       onNextMonthClick={action('DayPickerRangeController::onNextMonthClick')}
-      isOutsideRange={day =>
-        !isInclusivelyAfterDay(day, moment()) ||
-        isInclusivelyAfterDay(day, moment().add(2, 'weeks'))
+      isOutsideRange={day => !isInclusivelyAfterDay(day, moment())
+        || isInclusivelyAfterDay(day, moment().add(2, 'weeks'))
       }
     />
   )))

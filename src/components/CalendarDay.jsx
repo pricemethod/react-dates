@@ -332,15 +332,18 @@ export default withStyles(
     CalendarDay__blocked_calendar: {
       background: color.blocked_calendar.backgroundColor,
       color: color.blocked_calendar.color,
-      // border: `${border.width}px solid ${color.blocked_calendar.borderColor}`,
+      border: `${border.width}px solid ${color.blocked_calendar.borderColor}`,
 
       ':hover': {
-        border: `${border.width}px solid ${color.blocked_calendar.borderColor}`,
+        border: `${border.width}px solid ${color.blocked_out_of_range.borderColor}`,
+        background: color.blocked_out_of_range.backgroundColor_hover,
+        color: color.blocked_out_of_range.color,
+        fontWeight: font.weight.default,
       },
 
-      ':active': {
-        border: `${border.width}px solid ${color.blocked_calendar.borderColor}`,
-      },
+      // ':active': {
+      //   border: `${border.width}px solid ${color.blocked_calendar.borderColor}`,
+      // },
     },
 
     CalendarDay__blocked_out_of_range: {
